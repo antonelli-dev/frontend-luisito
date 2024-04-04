@@ -8,6 +8,7 @@ import { Sidebar, Menu, MenuItem, sidebarClasses } from "react-pro-sidebar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import { faTimes, faPlane, faCalendarTimes, faGraduationCap, faUserTie, faHistory, faBriefcase, faUsers, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { LoginForm } from "./LoginForm";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: "/ausencias",
     element: <AusenciasPage />,
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
   },
   {
     path: "/",
@@ -100,6 +105,17 @@ function AusenciasPage() {
       <ContentSpace>
         <AusenciasForm onSubmit={null} />
       </ContentSpace>
+    </div>
+  );
+}
+
+function LoginPage() {
+  return (
+    <div className="page-container">
+
+      <div className="ContentSpaceAuth">
+        <LoginForm onSubmit={null} />
+      </div>
     </div>
   );
 }
