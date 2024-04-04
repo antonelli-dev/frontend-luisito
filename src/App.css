@@ -1,38 +1,54 @@
+/* App.css */
+
+.page-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 250px; /* Adjust the width as needed */
+  background-color: #333; /* Adjust the background color */
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+}
+
 .App {
-  text-align: center;
+  display: flex; /* Use flexbox layout */
+  height: 100vh; /* Set the height of the container to 100% of the viewport height */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Apply styles to the Sidebar component */
+.sideBarContainer {
+  margin: '20px 20px 20px 20px';
+  height: max-content;
+  
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.form-container {
+  background-color: #fff; /* Adjust background color as needed */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+
+body{
+  background-image: url( './assets/backgroundavion.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.ContentSpace{
   display: flex;
   flex-direction: column;
+  margin-top: 5%;
+  height: 80%;
+  width: 70%;
   align-items: center;
+  text-align: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
