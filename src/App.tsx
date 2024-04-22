@@ -51,7 +51,7 @@ const router = createBrowserRouter([
 ]);
 
 function SidebarContent() {
-  const [isSideBarOpen, setSideBarStatus] = useState(true);
+  const [isSideBarOpen, setSideBarStatus] = useState(false);
   const navigate = useNavigate();
   const {setLoggedIn} = useAuth();
 
@@ -87,7 +87,6 @@ function SidebarContent() {
       }}
     >
       <Menu>
-        <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={handleSidebarToggle}><FontAwesomeIcon icon={faTimes} /> {' '}Hide</MenuItem>
         <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={() => handleNavigate("/aerolineas")}><FontAwesomeIcon icon={faPlane} /> Aerolineas</MenuItem>
         <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={() => handleNavigate("/ausencias")}><FontAwesomeIcon icon={faCalendarTimes} /> Ausencias</MenuItem>
         <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={()=> handleNavigate("/capacitaciones")}> <FontAwesomeIcon icon={faGraduationCap} />{' '}Capacitaciones </MenuItem>
@@ -170,7 +169,7 @@ function CapacitacionesPage() {
         <Navbar />
         <SidebarContent />
         <ContentSpace>
-          <CapacitacionesForm onSubmit={()=> null} />
+          <CapacitacionesForm onSubmit={null} />
         </ContentSpace>
       </Layout>
     </div>

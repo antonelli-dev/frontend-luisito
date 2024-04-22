@@ -1,9 +1,11 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import FormContainer from "./FormContainer";
 import "./AusenciasForm.css";
+import AusenciasTable from "./AusenciasTable";
 
 interface AusenciasFormData {
   id_empleado: number;
+  nombre: string;
   tipo: string;
   fecha_inicio: string;
   fecha_fin: string;
@@ -18,19 +20,23 @@ const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
   const tipoRef = useRef<HTMLInputElement>(null);
   const fechaInicioRef = useRef<HTMLInputElement>(null);
   const fechaFinRef = useRef<HTMLInputElement>(null);
+  const [showTable, setShowTable] = useState(false);
+  const demoData = [ // Hardcoded demo data
+    { id_empleado: 1, nombre: 'Empleado 1', tipo: 'Vacaciones', fecha_inicio: '2024-04-01', fecha_fin: '2024-04-05' },
+    { id_empleado: 2, nombre: 'Empleado 2', tipo: 'Enfermedad', fecha_inicio: '2024-04-10', fecha_fin: '2024-04-12' },
+    // Add more demo data as needed
+  ];
 
   const handleSubmit = () => {
-    if (
-      idEmpleadoRef.current &&
-      tipoRef.current &&
-      fechaInicioRef.current &&
-      fechaFinRef.current
-    ) {
-      const id_empleado = parseInt(idEmpleadoRef.current.value);
-      const tipo = tipoRef.current.value;
-      const fecha_inicio = fechaInicioRef.current.value;
-      const fecha_fin = fechaFinRef.current.value;
-    }
+    // Your form submission logic here
+  };
+
+  const handleShowTable = () => {
+    setShowTable(true);
+  };
+
+  const handleCloseTable = () => {
+    setShowTable(false);
   };
 
   return (
@@ -52,6 +58,7 @@ const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
         <input type="date" id="fechaFin" ref={fechaFinRef} />
       </div>
       <button type="submit" className="submit-button">Enviar</button>
+      <AusenciasTable data={demoData} />
     </FormContainer>
   );
 };

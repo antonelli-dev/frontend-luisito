@@ -1,8 +1,9 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import FormContainer from "../../FormContainer";
 import "./AerolineasForm.css";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { CrearAerolineaDto } from "./dtos/crear-aerolinea-dto";
+import AerolineasTable from "../../AerolineasTable";
 
 interface AerolineasFormData {
   aerolineas: string;
@@ -18,14 +19,16 @@ const AerolineasForm: React.FC<AerolineasFormProps> = ({ onSubmit }) => {
   const aerolineasRef = useRef<HTMLInputElement>(null);
   const nombreRef = useRef<HTMLInputElement>(null);
   const descripcionRef = useRef<HTMLInputElement>(null);
+  const [showDialog, setShowDialog] = useState(false);
+  const demoData = [ // Hardcoded demo data
+    { id: 1, nombre: 'Aerolínea 1', descripcion: 'Descripción de Aerolínea 1' },
+    { id: 2, nombre: 'Aerolínea 2', descripcion: 'Descripción de Aerolínea 2' },
+    // Add more demo data as needed
+  ];
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (
-      nombreRef.current &&
-      descripcionRef.current
-    ) {
-      // const aerolineas = aerolineasRef.current.value;
+    if (nombreRef.current && descripcionRef.current) {
       const nombre = nombreRef.current.value;
       const descripcion = descripcionRef.current.value;
 
@@ -37,10 +40,21 @@ const AerolineasForm: React.FC<AerolineasFormProps> = ({ onSubmit }) => {
           nombre: descripcion
         } as CrearAerolineaDto,
         responseType: 'json'
-    }).then(x => {
-      alert("Se ha creado la arerolinea correctamente.")
-    })
-  }
+      }).then(response => {
+        alert("Se ha creado la aerolínea correctamente.")
+      })
+      .catch(error => {
+        alert("Ha ocurrido un error al crear la aerolínea.");
+      });
+    }
+  };
+
+  const handleShowDialog = () => {
+    setShowDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setShowDialog(false);
   };
 
   return (
@@ -58,6 +72,10 @@ const AerolineasForm: React.FC<AerolineasFormProps> = ({ onSubmit }) => {
         <input type="text" id="descripcion" ref={descripcionRef} />
       </div>
       <button type="submit" className="submit-button">Enviar</button>
+    
+      <div style={{ marginTop: '20px' }}>
+        <AerolineasTable data={demoData} />
+      </div>
     </FormContainer>
   );
 };

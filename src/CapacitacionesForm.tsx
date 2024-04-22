@@ -1,6 +1,7 @@
-import React, { useRef } from "react";
-import FormContainer from "./FormContainer";
+import React, { useRef, useState } from "react";
+import FormContainer from "../src/FormContainer";
 import "./CapacitacionesForm.css";
+import CapacitacionesTable from "./CapacitacionesTable";
 
 interface CapacitacionesFormData {
   id: number;
@@ -11,41 +12,35 @@ interface CapacitacionesFormData {
 }
 
 interface CapacitacionesFormProps {
-  onSubmit: (formData: CapacitacionesFormData) => void;
+  onSubmit: null;
 }
 
 const CapacitacionesForm: React.FC<CapacitacionesFormProps> = ({ onSubmit }) => {
-  const idRef = useRef<HTMLInputElement>(null);
   const nombreRef = useRef<HTMLInputElement>(null);
   const descripcionRef = useRef<HTMLInputElement>(null);
   const fechaInicioRef = useRef<HTMLInputElement>(null);
   const fechaFinalRef = useRef<HTMLInputElement>(null);
+  const [showTable, setShowTable] = useState(false);
+  const demoData = [ // Hardcoded demo data
+    { id: 1, nombre: 'Capacitación 1', descripcion: 'Descripción de Capacitación 1', fecha_inicio: '2024-04-01', fecha_final: '2024-04-05' },
+    { id: 2, nombre: 'Capacitación 2', descripcion: 'Descripción de Capacitación 2', fecha_inicio: '2024-04-10', fecha_final: '2024-04-12' },
+    // Add more demo data as needed
+  ];
 
   const handleSubmit = () => {
-    if (
-      idRef.current &&
-      nombreRef.current &&
-      descripcionRef.current &&
-      fechaInicioRef.current &&
-      fechaFinalRef.current
-    ) {
-      const formData: CapacitacionesFormData = {
-        id: parseInt(idRef.current.value),
-        nombre: nombreRef.current.value,
-        descripcion: descripcionRef.current.value,
-        fecha_inicio: fechaInicioRef.current.value,
-        fecha_final: fechaFinalRef.current.value,
-      };
-      onSubmit(formData);
-    }
+    // Your form submission logic here
+  };
+
+  const handleShowTable = () => {
+    setShowTable(true);
+  };
+
+  const handleCloseTable = () => {
+    setShowTable(false);
   };
 
   return (
     <FormContainer onSubmit={handleSubmit} title="Añadir Capacitación">
-      <div className="form-group">
-        <label htmlFor="id">ID:</label>
-        <input type="number" id="id" ref={idRef} />
-      </div>
       <div className="form-group">
         <label htmlFor="nombre">Nombre:</label>
         <input type="text" id="nombre" ref={nombreRef} />
@@ -63,6 +58,9 @@ const CapacitacionesForm: React.FC<CapacitacionesFormProps> = ({ onSubmit }) => 
         <input type="date" id="fechaFinal" ref={fechaFinalRef} />
       </div>
       <button type="submit" className="submit-button">Enviar</button>
+    
+
+     <CapacitacionesTable data={demoData} />
     </FormContainer>
   );
 };

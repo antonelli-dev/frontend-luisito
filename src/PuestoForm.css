@@ -1,8 +1,9 @@
 /* PuestosForm.css */
 .form-container {
     overflow-y: auto;
-    max-height: 400px; /* Adjust the height as needed */
-    position: relative; /* Ensure slider position relative to form container */
+    max-height: 400px; 
+    width: 100%;
+    position: relative; 
   }
   
   .form-group {

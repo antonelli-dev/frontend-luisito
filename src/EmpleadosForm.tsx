@@ -1,6 +1,7 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import FormContainer from "./FormContainer";
 import "./EmpleadosForm.css";
+import EmpleadosTable from "./EmpleadosTable";
 
 interface EmpleadosFormData {
   id: number;
@@ -13,7 +14,7 @@ interface EmpleadosFormData {
   correo_electronico: string;
   aerolinea_id: number;
   puesto_id: number;
-  fecha_contratacion: string; 
+  fecha_contratacion: string;
   salario: number;
 }
 
@@ -22,105 +23,105 @@ interface EmpleadosFormProps {
 }
 
 const EmpleadosForm: React.FC<EmpleadosFormProps> = ({ onSubmit }) => {
-  const idRef = useRef<HTMLInputElement>(null);
-  const nombresRef = useRef<HTMLInputElement>(null);
-  const apellidosRef = useRef<HTMLInputElement>(null);
-  const fechaNacimientoRef = useRef<HTMLInputElement>(null);
-  const generoRef = useRef<HTMLInputElement>(null);
-  const direccionRef = useRef<HTMLInputElement>(null);
-  const telefonoRef = useRef<HTMLInputElement>(null);
-  const correoElectronicoRef = useRef<HTMLInputElement>(null);
-  const aerolineaIdRef = useRef<HTMLInputElement>(null);
-  const puestoIdRef = useRef<HTMLInputElement>(null);
-  const fechaContratacionRef = useRef<HTMLInputElement>(null);
-  const salarioRef = useRef<HTMLInputElement>(null);
-
-  const handleSubmit = () => {
-    if (
-      idRef.current &&
-      nombresRef.current &&
-      apellidosRef.current &&
-      fechaNacimientoRef.current &&
-      generoRef.current &&
-      direccionRef.current &&
-      telefonoRef.current &&
-      correoElectronicoRef.current &&
-      aerolineaIdRef.current &&
-      puestoIdRef.current &&
-      fechaContratacionRef.current &&
-      salarioRef.current
-    ) {
-      const formData: EmpleadosFormData = {
-        id: parseInt(idRef.current.value),
-        nombres: nombresRef.current.value,
-        apellidos: apellidosRef.current.value,
-        fecha_nacimiento: fechaNacimientoRef.current.value,
-        genero: generoRef.current.value,
-        direccion: direccionRef.current.value,
-        telefono: telefonoRef.current.value,
-        correo_electronico: correoElectronicoRef.current.value,
-        aerolinea_id: parseInt(aerolineaIdRef.current.value),
-        puesto_id: parseInt(puestoIdRef.current.value),
-        fecha_contratacion: fechaContratacionRef.current.value,
-        salario: parseFloat(salarioRef.current.value),
-      };
-      onSubmit(formData);
+  const [showTable, setShowTable] = useState(false);
+  const demoData = [
+    {
+      id: 1,
+      nombres: "Juan",
+      apellidos: "Pérez",
+      fecha_nacimiento: "1990-05-15",
+      genero: "Masculino",
+      direccion: "Calle Principal 123",
+      telefono: "123456789",
+      correo_electronico: "juan@example.com",
+      aerolinea_id: 1,
+      puesto_id: 1,
+      fecha_contratacion: "2022-01-01",
+      salario: 2500
+    },
+    {
+      id: 2,
+      nombres: "María",
+      apellidos: "Gómez",
+      fecha_nacimiento: "1988-09-20",
+      genero: "Femenino",
+      direccion: "Avenida Secundaria 456",
+      telefono: "987654321",
+      correo_electronico: "maria@example.com",
+      aerolinea_id: 2,
+      puesto_id: 2,
+      fecha_contratacion: "2021-12-15",
+      salario: 2800
     }
+  ];
+
+
+  const handleShowTable = () => {
+    setShowTable(true);
   };
 
+  const handleCloseTable = () => {
+    setShowTable(false);
+  };
+
+  
+
   return (
-    <div className="form-container">
-      <FormContainer onSubmit={handleSubmit} title="Añadir Empleado">
+    <div className="empleados-form-container">
+      <FormContainer onSubmit={() => {}} title="Añadir Empleado">
         <div className="form-group">
           <label htmlFor="id">ID:</label>
-          <input type="number" id="id" ref={idRef} />
+          <input type="number" id="id" disabled />
         </div>
         <div className="form-group">
           <label htmlFor="nombres">Nombres:</label>
-          <input type="text" id="nombres" ref={nombresRef} />
+          <input type="text" id="nombres" disabled />
         </div>
         <div className="form-group">
           <label htmlFor="apellidos">Apellidos:</label>
-          <input type="text" id="apellidos" ref={apellidosRef} />
+          <input type="text" id="apellidos" disabled />
         </div>
         <div className="form-group">
-          <label htmlFor="fechaNacimiento">Fecha de Nacimiento:</label>
-          <input type="date" id="fechaNacimiento" ref={fechaNacimientoRef} />
+          <label htmlFor="fecha_nacimiento">Fecha de Nacimiento:</label>
+          <input type="date" id="fecha_nacimiento" disabled />
         </div>
         <div className="form-group">
           <label htmlFor="genero">Género:</label>
-          <input type="text" id="genero" ref={generoRef} />
+          <input type="text" id="genero" disabled />
         </div>
         <div className="form-group">
           <label htmlFor="direccion">Dirección:</label>
-          <input type="text" id="direccion" ref={direccionRef} />
+          <input type="text" id="direccion" disabled />
         </div>
         <div className="form-group">
           <label htmlFor="telefono">Teléfono:</label>
-          <input type="text" id="telefono" ref={telefonoRef} />
+          <input type="text" id="telefono" disabled />
         </div>
         <div className="form-group">
-          <label htmlFor="correoElectronico">Correo Electrónico:</label>
-          <input type="email" id="correoElectronico" ref={correoElectronicoRef} />
+          <label htmlFor="correo_electronico">Correo Electrónico:</label>
+          <input type="email" id="correo_electronico" disabled />
         </div>
         <div className="form-group">
-          <label htmlFor="aerolineaId">ID de Aerolínea:</label>
-          <input type="number" id="aerolineaId" ref={aerolineaIdRef} />
+          <label htmlFor="aerolinea_id">ID de Aerolínea:</label>
+          <input type="number" id="aerolinea_id" disabled />
         </div>
         <div className="form-group">
-          <label htmlFor="puestoId">ID de Puesto:</label>
-          <input type="number" id="puestoId" ref={puestoIdRef} />
+          <label htmlFor="puesto_id">ID de Puesto:</label>
+          <input type="number" id="puesto_id" disabled />
         </div>
         <div className="form-group">
-          <label htmlFor="fechaContratacion">Fecha de Contratación:</label>
-          <input type="date" id="fechaContratacion" ref={fechaContratacionRef} />
+          <label htmlFor="fecha_contratacion">Fecha de Contratación:</label>
+          <input type="date" id="fecha_contratacion" disabled />
         </div>
         <div className="form-group">
           <label htmlFor="salario">Salario:</label>
-          <input type="number" id="salario" step="0.01" ref={salarioRef} />
+          <input type="number" id="salario" step="0.01" disabled />
         </div>
         <button type="submit" className="submit-button">Enviar</button>
+        <EmpleadosTable data={demoData} />
       </FormContainer>
+
+     
     </div>
   );
 };
