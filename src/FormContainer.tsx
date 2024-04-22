@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import './App.css';
 
-const FormContainer = ({ children }:any) => {
+interface IFormContainerProps {
+  children: ReactNode,
+  title?: string;
+  onSubmit: (e: any) => void;
+};
+
+const FormContainer = ({ children, onSubmit  }: IFormContainerProps) => {
   return (
-    <div className="form-container">
+    <form className="form-container" onSubmit={onSubmit}>
       {children}
-    </div>
+    </form>
   );
 };
 

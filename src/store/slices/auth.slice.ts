@@ -1,12 +1,14 @@
 import { StateCreator } from "zustand";
 
 export interface IAuthSlice {
-    isLoggedIn: boolean;
-    setLoggedIn: (value: boolean) => void
+    onError: boolean;
+    onErrorMessage: string;
+    setOnError: (value: boolean, message: string) => void
 };
 
 
 export const createAuthSlice: StateCreator<IAuthSlice> = (set) => ({
-    isLoggedIn: false,
-    setLoggedIn: (value: boolean) => set( (state) => ({ isLoggedIn: value }) )
+    onError: false,
+    onErrorMessage: '',
+    setOnError: (value: boolean, message: string) => set( (state) => ({ onError: value, onErrorMessage: message }) )
 })

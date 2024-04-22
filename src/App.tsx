@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Navbar from "./NavBar";
 import ContentSpace from "./ContentSpace";
-import AerolineasForm from "./AerolineasForm";
+import AerolineasForm from "./views/aerolineas/AerolineasForm";
 import AusenciasForm from "./AusenciasForm";
 import { Sidebar, Menu, MenuItem, sidebarClasses } from "react-pro-sidebar";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,6 +11,10 @@ import { faTimes, faPlane, faCalendarTimes, faGraduationCap, faUserTie, faHistor
 import { LoginForm } from "./LoginForm";
 import { Layout } from "./core/Layout";
 import { useAuth } from "./hooks/useAuth";
+
+import axios from "axios";
+import { setupInterceptorsTo } from "./core/lib/axios/request.interceptor";
+setupInterceptorsTo(axios)
 
 const router = createBrowserRouter([
   {
