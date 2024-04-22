@@ -14,6 +14,9 @@ import { useAuth } from "./hooks/useAuth";
 
 import axios from "axios";
 import { setupInterceptorsTo } from "./core/lib/axios/request.interceptor";
+import CapacitacionesForm from "./CapacitacionesForm";
+import EmpleadosForm from "./EmpleadosForm";
+import PuestosForm from "./PuestoForm";
 setupInterceptorsTo(axios)
 
 const router = createBrowserRouter([
@@ -32,6 +35,18 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <HomePage />,
+  },
+  {
+    path: "/capacitaciones",
+    element: <CapacitacionesPage />
+  },
+  {
+    path: "/empleados",
+    element: <EmpleadosPage />
+  },
+  {
+    path: "/puestos",
+    element: <PuestosPage />
   },
 ]);
 
@@ -75,10 +90,10 @@ function SidebarContent() {
         <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={handleSidebarToggle}><FontAwesomeIcon icon={faTimes} /> {' '}Hide</MenuItem>
         <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={() => handleNavigate("/aerolineas")}><FontAwesomeIcon icon={faPlane} /> Aerolineas</MenuItem>
         <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={() => handleNavigate("/ausencias")}><FontAwesomeIcon icon={faCalendarTimes} /> Ausencias</MenuItem>
-        <MenuItem style={{ color: 'white', fontWeight: 'bold' }}> <FontAwesomeIcon icon={faGraduationCap} />{' '}Capacitaciones </MenuItem>
-        <MenuItem style={{ color: 'white', fontWeight: 'bold' }}><FontAwesomeIcon icon={faUserTie} />{' '}Empleados </MenuItem>
+        <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={()=> handleNavigate("/capacitaciones")}> <FontAwesomeIcon icon={faGraduationCap} />{' '}Capacitaciones </MenuItem>
+        <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={()=> handleNavigate("/empleados")}><FontAwesomeIcon icon={faUserTie} />{' '}Empleados </MenuItem>
         <MenuItem style={{ color: 'white', fontWeight: 'bold' }}><FontAwesomeIcon icon={faHistory} />{' '} Historial Laboral </MenuItem>
-        <MenuItem style={{ color: 'white', fontWeight: 'bold' }}><FontAwesomeIcon icon={faBriefcase} />{' '} Puestos </MenuItem>
+        <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={()=> handleNavigate("/puestos")}><FontAwesomeIcon icon={faBriefcase} />{' '} Puestos </MenuItem>
         <MenuItem style={{ color: 'white', fontWeight: 'bold' }}><FontAwesomeIcon icon={faUsers} />{' '} Usuarios </MenuItem>
         <MenuItem style={{ color: '#d80000', fontWeight: 'bold' }} onClick={() => logout()}><FontAwesomeIcon icon={faSignOutAlt} style={{ color: '#d80000' }}  /> Cerrar Sesion </MenuItem>
       </Menu>
@@ -113,6 +128,49 @@ function AerolineasPage() {
         <SidebarContent />
         <ContentSpace>
           <AerolineasForm onSubmit={null} />
+        </ContentSpace>
+      </Layout>
+    </div>
+  );
+}
+
+function EmpleadosPage() {
+  return (
+    <div className="page-container">
+      <Layout>
+        <Navbar />
+        <SidebarContent />
+        <ContentSpace>
+          <EmpleadosForm onSubmit={()=> null} />
+        </ContentSpace>
+      </Layout>
+    </div>
+  );
+}
+
+function PuestosPage() {
+  return (
+    <div className="page-container">
+      <Layout>
+        <Navbar />
+        <SidebarContent />
+        <ContentSpace>
+          <PuestosForm onSubmit={()=> null} />
+        </ContentSpace>
+      </Layout>
+    </div>
+  );
+}
+
+
+function CapacitacionesPage() {
+  return (
+    <div className="page-container">
+      <Layout>
+        <Navbar />
+        <SidebarContent />
+        <ContentSpace>
+          <CapacitacionesForm onSubmit={()=> null} />
         </ContentSpace>
       </Layout>
     </div>
