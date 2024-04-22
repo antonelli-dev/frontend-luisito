@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./hooks/useAuth";
 
 interface AusenciasFormProps {
     onSubmit: null;
@@ -9,7 +10,7 @@ export const LoginForm = ({ onSubmit }: AusenciasFormProps) => {
 
     const usuario = useRef<HTMLInputElement>(null);
     const claveAcceso = useRef<HTMLInputElement>(null);
-
+    const {setLoggedIn} = useAuth();
     const navigate = useNavigate();
     
     const handleSubmitForm = (e: any) => {
@@ -20,6 +21,8 @@ export const LoginForm = ({ onSubmit }: AusenciasFormProps) => {
 
 
         if( user === 'luis' && password === 'dev' ) {
+           
+            setLoggedIn(true);
             navigate('/')
         } else {
             alert("El nombre de usuario o contraseña con incorrectos.");

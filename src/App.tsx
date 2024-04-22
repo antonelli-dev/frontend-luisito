@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Navbar from "./NavBar";
 import ContentSpace from "./ContentSpace";
@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import { faTimes, faPlane, faCalendarTimes, faGraduationCap, faUserTie, faHistory, faBriefcase, faUsers, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { LoginForm } from "./LoginForm";
+import { Layout } from "./core/Layout";
+import { useAuth } from "./hooks/useAuth";
 
 const router = createBrowserRouter([
   {
@@ -32,14 +34,21 @@ const router = createBrowserRouter([
 function SidebarContent() {
   const [isSideBarOpen, setSideBarStatus] = useState(true);
   const navigate = useNavigate();
+  const {setLoggedIn} = useAuth();
 
   const handleSidebarToggle = () => {
     setSideBarStatus(!isSideBarOpen);
   };
 
-  const handleNavigate = (path:any) => {
+  const handleNavigate = (path: any) => {
     navigate(path);
     handleSidebarToggle(); // Close sidebar after navigation
+  };
+
+  const logout = () => {
+    navigate("/login")
+    setLoggedIn(false);
+    
   };
 
   return (
@@ -49,38 +58,45 @@ function SidebarContent() {
       rootStyles={{
         [`.${sidebarClasses.container}`]: {
           boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-          backgroundColor:'rgba(0, 0, 0, 0.5)',
-          height:'80%',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          height: '80%',
           borderRadius: '10px',
           textAlign: 'left',
           marginTop: '40%',
-          paddingTop:'2rem'
+          paddingTop: '2rem'
         },
       }}
     >
       <Menu>
-        <MenuItem style={{color:'white', fontWeight:'bold'}} onClick={handleSidebarToggle}><FontAwesomeIcon icon={faTimes}/> {' '}Hide</MenuItem>
-        <MenuItem style={{color:'white', fontWeight:'bold'}} onClick={() => handleNavigate("/aerolineas")}><FontAwesomeIcon icon={faPlane}/> Aerolineas</MenuItem>
-        <MenuItem style={{color:'white', fontWeight:'bold'}} onClick={() => handleNavigate("/ausencias")}><FontAwesomeIcon icon={faCalendarTimes} /> Ausencias</MenuItem>
-        <MenuItem style={{color:'white', fontWeight:'bold'}}> <FontAwesomeIcon icon={faGraduationCap}/>{' '}Capacitaciones </MenuItem>
-        <MenuItem style={{color:'white', fontWeight:'bold'}}><FontAwesomeIcon icon={faUserTie} />{' '}Empleados </MenuItem>
-        <MenuItem style={{color:'white', fontWeight:'bold'}}><FontAwesomeIcon icon={faHistory} />{' '} Historial Laboral </MenuItem>
-        <MenuItem style={{color:'white', fontWeight:'bold'}}><FontAwesomeIcon icon={faBriefcase}/>{' '} Puestos </MenuItem>
-        <MenuItem style={{color:'white', fontWeight:'bold'}}><FontAwesomeIcon icon={faUsers} />{' '} Usuarios </MenuItem>
-        <MenuItem style={{color:'#d80000', fontWeight:'bold'}}><FontAwesomeIcon icon={faSignOutAlt} style={{color:'#d80000'}}/> Cerrar Sesion </MenuItem>
+        <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={handleSidebarToggle}><FontAwesomeIcon icon={faTimes} /> {' '}Hide</MenuItem>
+        <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={() => handleNavigate("/aerolineas")}><FontAwesomeIcon icon={faPlane} /> Aerolineas</MenuItem>
+        <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={() => handleNavigate("/ausencias")}><FontAwesomeIcon icon={faCalendarTimes} /> Ausencias</MenuItem>
+        <MenuItem style={{ color: 'white', fontWeight: 'bold' }}> <FontAwesomeIcon icon={faGraduationCap} />{' '}Capacitaciones </MenuItem>
+        <MenuItem style={{ color: 'white', fontWeight: 'bold' }}><FontAwesomeIcon icon={faUserTie} />{' '}Empleados </MenuItem>
+        <MenuItem style={{ color: 'white', fontWeight: 'bold' }}><FontAwesomeIcon icon={faHistory} />{' '} Historial Laboral </MenuItem>
+        <MenuItem style={{ color: 'white', fontWeight: 'bold' }}><FontAwesomeIcon icon={faBriefcase} />{' '} Puestos </MenuItem>
+        <MenuItem style={{ color: 'white', fontWeight: 'bold' }}><FontAwesomeIcon icon={faUsers} />{' '} Usuarios </MenuItem>
+        <MenuItem style={{ color: '#d80000', fontWeight: 'bold' }} onClick={() => logout()}><FontAwesomeIcon icon={faSignOutAlt} style={{ color: '#d80000' }}  /> Cerrar Sesion </MenuItem>
       </Menu>
     </Sidebar>
   );
 }
 
 function HomePage() {
+
+  useEffect(() => {
+
+  },)
+
   return (
     <div className="page-container">
-      <Navbar />
-      <SidebarContent />
-      <ContentSpace>
-        <AerolineasForm onSubmit={null} />
-      </ContentSpace>
+      <Layout>
+        <Navbar />
+        <SidebarContent />
+        <ContentSpace>
+          <AerolineasForm onSubmit={null} />
+        </ContentSpace>
+      </Layout>
     </div>
   );
 }
@@ -88,11 +104,13 @@ function HomePage() {
 function AerolineasPage() {
   return (
     <div className="page-container">
-      <Navbar />
-      <SidebarContent />
-      <ContentSpace>
-        <AerolineasForm onSubmit={null} />
-      </ContentSpace>
+      <Layout>
+        <Navbar />
+        <SidebarContent />
+        <ContentSpace>
+          <AerolineasForm onSubmit={null} />
+        </ContentSpace>
+      </Layout>
     </div>
   );
 }
@@ -100,11 +118,13 @@ function AerolineasPage() {
 function AusenciasPage() {
   return (
     <div className="page-container">
-      <Navbar />
-      <SidebarContent />
-      <ContentSpace>
-        <AusenciasForm onSubmit={null} />
-      </ContentSpace>
+      <Layout>
+        <Navbar />
+        <SidebarContent />
+        <ContentSpace>
+          <AusenciasForm onSubmit={null} />
+        </ContentSpace>
+      </Layout>
     </div>
   );
 }
