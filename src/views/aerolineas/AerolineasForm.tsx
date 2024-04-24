@@ -4,6 +4,7 @@ import "./AerolineasForm.css";
 import axios from "axios";
 import { CrearAerolineaDto } from "./dtos/crear-aerolinea-dto";
 import AerolineasTable from "../../AerolineasTable";
+import { AerolineaDto } from "./dtos/aerolinea.dto";
 
 interface AerolineasFormData {
   aerolineas: string;
@@ -16,12 +17,22 @@ interface AerolineasFormProps {
 }
 
 const AerolineasForm: React.FC<AerolineasFormProps> = ({ onSubmit }) => {
-  const [aerolineasData, setAerolineas] = useState<[]>([]);
+  const [aerolineasData, setAerolineas] = useState<AerolineaDto[]>([]);
   const aerolineasRef = useRef<HTMLInputElement>(null);
   const nombreRef = useRef<HTMLInputElement>(null);
   const descripcionRef = useRef<HTMLInputElement>(null);
   const [showDialog, setShowDialog] = useState(false);
  
+
+    
+  const onDelete = (e: any) => {
+    axios.delete(`http://localhost:4000/aerolineas/${e.data.id_de_aerolinea}`).then(x => alert("Se ha eliminado la aerolinea correctamente"));
+  }
+
+  const onUpdate = (e: any) => {
+    axios.put(`http://localhost:4000/aerolineas/${e.data.id_de_aerolinea}`, e.data).then(x => alert("Se ha guardado la capacitación correctamente."));
+  };
+
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -96,7 +107,7 @@ useEffect(() => {
       <button type="submit" className="submit-button">Enviar</button>
     
       <div style={{ marginTop: '20px',display:'flex', justifyContent:'center' }}>
-        <AerolineasTable data={aerolineasData} onEdit={()=>{}} onDelete={()=>{}}/>
+        <AerolineasTable data={aerolineasData} onEdit={onUpdate} onDelete={onDelete}/>
       </div>
     </FormContainer>
   );

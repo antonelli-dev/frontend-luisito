@@ -87,7 +87,7 @@ const CapacitacionesForm: React.FC<CapacitacionesFormProps> = ({ onSubmit }) => 
       </div>
       <button type="submit" className="submit-button">Enviar</button>
 
-      <DataGrid dataSource={capacitaciones} keyExpr={'id'} onRowRemoved={onDelete} onRowUpdated={onUpdate} >
+      <DataGrid dataSource={capacitaciones} keyExpr={'id'} onRowRemoved={onDelete} onRowUpdated={onUpdate} showColumnHeaders={true} >
         <Column dataField="id" caption="Id" allowEditing={false}></Column>
         <Column dataField="nombre" caption="Nombre">
           <ValidationRule type="required" message="El nombre es requerido"></ValidationRule>
