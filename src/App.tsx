@@ -17,6 +17,7 @@ import { setupInterceptorsTo } from "./core/lib/axios/request.interceptor";
 import CapacitacionesForm from "./views/capacitaciones/CapacitacionesForm";
 import EmpleadosForm from "./EmpleadosForm";
 import PuestosForm from "./PuestoForm";
+import HistorialLaboralForm from "./HistoriaLaboral";
 
 
 setupInterceptorsTo(axios)
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
     path: "/puestos",
     element: <PuestosPage />
   },
+  {
+    path: "/historiallaboral",
+    element: <HistorialLaboralPage/>
+  }
 ]);
 
 function SidebarContent() {
@@ -93,7 +98,7 @@ function SidebarContent() {
         <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={() => handleNavigate("/ausencias")}><FontAwesomeIcon icon={faCalendarTimes} /> Ausencias</MenuItem>
         <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={()=> handleNavigate("/capacitaciones")}> <FontAwesomeIcon icon={faGraduationCap} />{' '}Capacitaciones </MenuItem>
         <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={()=> handleNavigate("/empleados")}><FontAwesomeIcon icon={faUserTie} />{' '}Empleados </MenuItem>
-        <MenuItem style={{ color: 'white', fontWeight: 'bold' }}><FontAwesomeIcon icon={faHistory} />{' '} Historial Laboral </MenuItem>
+        <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={()=> handleNavigate("/historiallaboral")}><FontAwesomeIcon icon={faHistory} />{' '} Historial Laboral </MenuItem>
         <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={()=> handleNavigate("/puestos")}><FontAwesomeIcon icon={faBriefcase} />{' '} Puestos </MenuItem>
         <MenuItem style={{ color: 'white', fontWeight: 'bold' }}><FontAwesomeIcon icon={faUsers} />{' '} Usuarios </MenuItem>
         <MenuItem style={{ color: '#d80000', fontWeight: 'bold' }} onClick={() => logout()}><FontAwesomeIcon icon={faSignOutAlt} style={{ color: '#d80000' }}  /> Cerrar Sesion </MenuItem>
@@ -186,6 +191,20 @@ function AusenciasPage() {
         <SidebarContent />
         <ContentSpace>
           <AusenciasForm onSubmit={null} />
+        </ContentSpace>
+      </Layout>
+    </div>
+  );
+}
+
+function HistorialLaboralPage() {
+  return (
+    <div className="page-container">
+      <Layout>
+        <Navbar />
+        <SidebarContent />
+        <ContentSpace>
+          <HistorialLaboralForm />
         </ContentSpace>
       </Layout>
     </div>
