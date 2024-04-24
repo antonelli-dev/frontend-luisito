@@ -2,6 +2,8 @@ import React, { useRef, useState } from "react";
 import FormContainer from "./FormContainer";
 import "./PuestoForm.css";
 import PuestosTable from "./PuestosTable";
+import { CrearPuestoDTO } from "./views/aerolineas/dtos/crear-puesto-dto";
+import axios from "axios";
 
 interface PuestosFormData {
   nombre: string;
@@ -15,38 +17,47 @@ interface PuestosFormProps {
 
 const PuestosForm: React.FC<PuestosFormProps> = ({ onSubmit }) => {
   const [showTable, setShowTable] = useState(false);
-  const demoData = [
-    { nombre: 'Puesto 1', descripcion: 'Descripción 1', salario: 2500 },
-    { nombre: 'Puesto 2', descripcion: 'Descripción 2', salario: 2800 }
-    // Agregar más datos de ejemplo si es necesario
-  ];
+  const [puestoData, setPuesto] = useState<[]>([]);
+
+ 
 
   const nombreRef = useRef<HTMLInputElement>(null);
   const descripcionRef = useRef<HTMLInputElement>(null);
   const salarioRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = () => {
-    if (
-      nombreRef.current &&
-      descripcionRef.current &&
-      salarioRef.current
-    ) {
-      const formData: PuestosFormData = {
-        nombre: nombreRef.current.value,
-        descripcion: descripcionRef.current.value,
-        salario: parseFloat(salarioRef.current.value),
-      };
-      onSubmit(formData);
-    }
+  const fetchData = () => {
+    axios({
+      method: "GET",
+      url: "http://localhost:4000/puestos"
+    }).then(response =>{
+      setPuesto(response.data);
+    })
   };
 
-  const handleShowTable = () => {
-    setShowTable(true);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    axios({
+      method: "post",
+      url: "http://localhost:4000/puestos",
+      data: {
+        nombre: nombreRef.current?.value,
+        descripcion: descripcionRef.current?.value,
+        salario:Number(salarioRef.current?.value),
+      } as CrearPuestoDTO,
+      responseType: "json",
+    })
+      .then((response) => {
+        fetchData();
+        alert("Se ha creado el puesto correctamente.");
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Ha ocurrido un error al crear el puesto.");
+      });
   };
+  
 
-  const handleCloseTable = () => {
-    setShowTable(false);
-  };
+
 
   return (
       <FormContainer onSubmit={handleSubmit} title="Añadir Puesto">
@@ -63,7 +74,7 @@ const PuestosForm: React.FC<PuestosFormProps> = ({ onSubmit }) => {
           <input type="number" id="salario" step="0.01" ref={salarioRef} />
         </div>
         <button type="submit" className="submit-button">Enviar</button>
-        <PuestosTable data={demoData} />
+        <PuestosTable data={puestoData} onDelete={()=>{}} onEdit={()=>{}}/>
       </FormContainer>
   );
 };
