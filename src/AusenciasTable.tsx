@@ -8,9 +8,11 @@ import {
 
 interface AusenciasTableProps {
   data: any[]; 
+  onEdit: () => void;
+  onDelete: () => void;
 }
 
-const AusenciasTable: React.FC<AusenciasTableProps> = ({ data }) => {
+const AusenciasTable: React.FC<AusenciasTableProps> = ({ data, onEdit, onDelete }) => {
   const columns = [
     { name: 'nombre', title: 'Nombre' },
     { name: 'tipo', title: 'Tipo' },
@@ -19,13 +21,29 @@ const AusenciasTable: React.FC<AusenciasTableProps> = ({ data }) => {
   ];
 
   return (
-    <Grid
-      rows={data}
-      columns={columns}
-    >
-      <Table />
-      <TableHeaderRow />
-    </Grid>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((row) => (
+          <tr key={row.id}>
+            <td>{row.id_de_aerolinea}</td>
+            <td>{row.nombre}</td>
+            <td>{row.descripcion}</td>
+            <td>
+              <button className="edit-button"  onClick={() => onEdit(row)}>Editar</button>
+              <button className="delete-button" onClick={() => onDelete(row.id)}>Eliminar</button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 };
 

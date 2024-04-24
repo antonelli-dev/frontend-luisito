@@ -4,7 +4,7 @@ import './App.css';
 interface IFormContainerProps {
   children: ReactNode,
   title?: string;
-  onSubmit: (e: any) => void;
+  onSubmit?: (e: any) => void;
 };
 
 const FormContainer = ({ children, onSubmit  }: IFormContainerProps) => {

@@ -140,7 +140,7 @@ function EmpleadosPage() {
         <Navbar />
         <SidebarContent />
         <ContentSpace>
-          <EmpleadosForm onSubmit={()=> null} />
+          <EmpleadosForm  />
         </ContentSpace>
       </Layout>
     </div>

@@ -1,39 +1,55 @@
-// EmpleadosTable.tsx
 import React from 'react';
-import {
-  Grid,
-  Table,
-  TableHeaderRow
-} from '@devexpress/dx-react-grid-material-ui';
+import './TableButton.css'
 
 interface EmpleadosTableProps {
   data: any[]; // Array of empleados data
+  onEdit: (row: any) => void; // Function to handle edit action
+  onDelete: (id: number) => void; // Function to handle delete action
 }
 
-const EmpleadosTable: React.FC<EmpleadosTableProps> = ({ data }) => {
-  const columns = [
-    { name: 'id', title: 'ID' },
-    { name: 'nombres', title: 'Nombres' },
-    { name: 'apellidos', title: 'Apellidos' },
-    { name: 'fecha_nacimiento', title: 'Fecha de Nacimiento' },
-    { name: 'genero', title: 'Género' },
-    { name: 'direccion', title: 'Dirección' },
-    { name: 'telefono', title: 'Teléfono' },
-    { name: 'correo_electronico', title: 'Correo Electrónico' },
-    { name: 'aerolinea_id', title: 'ID de Aerolínea' },
-    { name: 'puesto_id', title: 'ID de Puesto' },
-    { name: 'fecha_contratacion', title: 'Fecha de Contratación' },
-    { name: 'salario', title: 'Salario' },
-  ];
-
+const EmpleadosTable: React.FC<EmpleadosTableProps> = ({ data, onEdit, onDelete }) => {
   return (
-    <Grid
-      rows={data}
-      columns={columns}
-    >
-      <Table />
-      <TableHeaderRow />
-    </Grid>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombres</th>
+          <th>Apellidos</th>
+          <th>Fecha de Nacimiento</th>
+          <th>Género</th>
+          <th>Dirección</th>
+          <th>Teléfono</th>
+          <th>Correo Electrónico</th>
+          <th>ID de Aerolínea</th>
+          <th>ID de Puesto</th>
+          <th>Fecha de Contratación</th>
+          <th>Salario</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.map((row) => (
+          <tr key={row.id}>
+            <td>{row.id}</td>
+            <td>{row.nombres}</td>
+            <td>{row.apellidos}</td>
+            <td>{row.fecha_nacimiento}</td>
+            <td>{row.genero}</td>
+            <td>{row.direccion}</td>
+            <td>{row.telefono}</td>
+            <td>{row.correo_electronico}</td>
+            <td>{row.aerolinea_id}</td>
+            <td>{row.puesto_id}</td>
+            <td>{row.fecha_contratacion}</td>
+            <td>{row.salario}</td>
+            <td>
+              <button className="edit-button"  onClick={() => onEdit(row)}>Editar</button>
+              <button className="delete-button" onClick={() => onDelete(row.id)}>Eliminar</button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 };
 

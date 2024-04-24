@@ -2,6 +2,8 @@ import React, { useRef, useState } from "react";
 import FormContainer from "./FormContainer";
 import "./AusenciasForm.css";
 import AusenciasTable from "./AusenciasTable";
+import axios from "axios";
+import { CrearAusenciaDTO } from "./views/aerolineas/dtos/crear-ausencia-dto";
 
 interface AusenciasFormData {
   id_empleado: number;
@@ -16,24 +18,54 @@ interface AusenciasFormProps {
 }
 
 const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
+
+  const [ausenciasList, setAusencias] = useState<[]>([]);
   const idEmpleadoRef = useRef<HTMLInputElement>(null);
   const tipoRef = useRef<HTMLInputElement>(null);
   const fechaInicioRef = useRef<HTMLInputElement>(null);
+  const descripcionRef = useRef<HTMLInputElement>(null);
   const fechaFinRef = useRef<HTMLInputElement>(null);
   const [showTable, setShowTable] = useState(false);
-  const demoData = [ // Hardcoded demo data
-    { id_empleado: 1, nombre: 'Empleado 1', tipo: 'Vacaciones', fecha_inicio: '2024-04-01', fecha_fin: '2024-04-05' },
-    { id_empleado: 2, nombre: 'Empleado 2', tipo: 'Enfermedad', fecha_inicio: '2024-04-10', fecha_fin: '2024-04-12' },
-    // Add more demo data as needed
-  ];
+
+  const fetchData=()=>{
+    axios({
+      method: "get",
+      url: "http://localhost:4000/ausencias"
+    }).then((response) => {
+      setAusencias(response.data);
+    }).catch((error) => {
+      console.error("Error fetching ausencias data:", error);
+      alert("Ha ocurrido un error al obtener las ausencias.");
+    });
+  }
 
   const handleSubmit = () => {
-    // Your form submission logic here
+    axios({
+      method: "post",
+      url: "http://localhost:4000/ausencias",
+      data: {
+        id_empleado: Number(idEmpleadoRef.current?.value),
+        tipo: tipoRef.current?.value,
+        descripcion: descripcionRef.current?.value,
+        fecha_inicio: new Date(fechaInicioRef.current?.value || new Date()),
+        fecha_final: new Date(fechaFinRef.current?.value || new Date()),
+      } as CrearAusenciaDTO,
+      responseType: 'json'
+    }).then(response => {
+      fetchData();
+      alert("Se ha creado la aerolínea correctamente.")
+      
+    })
+    .catch(error => {
+      alert("Ha ocurrido un error al crear la aerolínea.");
+    });
   };
 
   const handleShowTable = () => {
     setShowTable(true);
   };
+
+  
 
   const handleCloseTable = () => {
     setShowTable(false);
@@ -50,6 +82,10 @@ const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
         <input type="text" id="tipo" ref={tipoRef} />
       </div>
       <div className="form-group">
+        <label htmlFor="tipo">Descripcion:</label>
+        <input type="text" id="tipo" ref={descripcionRef} />
+      </div>
+      <div className="form-group">
         <label htmlFor="fechaInicio">Fecha de Inicio:</label>
         <input type="date" id="fechaInicio" ref={fechaInicioRef} />
       </div>
@@ -58,7 +94,7 @@ const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
         <input type="date" id="fechaFin" ref={fechaFinRef} />
       </div>
       <button type="submit" className="submit-button">Enviar</button>
-      <AusenciasTable data={demoData} />
+      <AusenciasTable data={ausenciasList} onDelete={()=>{}} onEdit={()=>{}} />
     </FormContainer>
   );
 };
