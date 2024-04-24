@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect } from "react";
 import FormContainer from "./FormContainer";
 import "./AusenciasForm.css";
 import AusenciasTable from "./AusenciasTable";
@@ -39,6 +39,10 @@ const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
     });
   }
 
+  useEffect(()=>{
+    fetchData();
+  },[]);
+
   const handleSubmit = () => {
     axios({
       method: "post",
@@ -61,14 +65,14 @@ const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
     });
   };
 
-  const handleShowTable = () => {
-    setShowTable(true);
+  const deleteElement = (id:any) => {
+  
   };
 
   
 
-  const handleCloseTable = () => {
-    setShowTable(false);
+  const editElement = () => {
+   
   };
 
   return (
@@ -94,9 +98,14 @@ const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
         <input type="date" id="fechaFin" ref={fechaFinRef} />
       </div>
       <button type="submit" className="submit-button">Enviar</button>
-      <AusenciasTable data={ausenciasList} onDelete={()=>{}} onEdit={()=>{}} />
+      <div style={{ marginTop: '20px',display:'flex', justifyContent:'center' }}>
+      <AusenciasTable data={ausenciasList} onDelete={deleteElement} onEdit={editElement}/>
+      </div>
     </FormContainer>
   );
 };
 
 export default AusenciasForm;
+
+
+
