@@ -56,7 +56,6 @@ const CapacitacionesForm: React.FC<CapacitacionesFormProps> = ({ onSubmit }) => 
   }
 
   const onUpdate = (e: any) => {
-    alert(e.data.id)
     axios.put(`http://localhost:4000/capacitaciones/${e.data.id}`, e.data).then(x => alert("Se ha guardado la capacitación correctamente."));
   };
 
