@@ -19,6 +19,8 @@
     "@types/react": "^18.2.74",
     "@types/react-dom": "^18.2.24",
     "axios": "^1.6.8",
+    "devextreme": "23.2.5",
+    "devextreme-react": "23.2.5",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
     "react": "^18.2.0",

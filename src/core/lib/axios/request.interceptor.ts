@@ -21,14 +21,14 @@ const onResponseError = (error: AxiosError): Promise<AxiosError> => {
 
     console.log("ssss amo")
 
-    const event = new CustomEvent<HttpBadResponse>("onAxiosInterceptError", {
-         detail: {
-             message: (error?.response?.data as HttpBadResponse).message,
-             statusCode: (error?.response?.data as HttpBadResponse).statusCode,
-         }
-     });
+    // const event = new CustomEvent<HttpBadResponse>("onAxiosInterceptError", {
+    //      detail: {
+    //          message: (error?.response?.data as HttpBadResponse).message,
+    //          statusCode: (error?.response?.data as HttpBadResponse).statusCode,
+    //      }
+    //  });
 
-     window.dispatchEvent(event);
+    //  window.dispatchEvent(event);
     
     return Promise.reject(error);
 }

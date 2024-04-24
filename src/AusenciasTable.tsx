@@ -37,8 +37,8 @@ const AusenciasTable: React.FC<AusenciasTableProps> = ({ data, onEdit, onDelete 
             <td>{row.nombre}</td>
             <td>{row.descripcion}</td>
             <td>
-              <button className="edit-button"  onClick={() => onEdit(row)}>Editar</button>
-              <button className="delete-button" onClick={() => onDelete(row.id)}>Eliminar</button>
+              {/* <button className="edit-button"  onClick={() => onEdit(row)}>editar</button> */}
+              {/* <button className="delete-button" onClick={() => onDelete(row.id)}>Eliminar</button> */}
             </td>
           </tr>
         ))}

@@ -14,9 +14,11 @@ import { useAuth } from "./hooks/useAuth";
 
 import axios from "axios";
 import { setupInterceptorsTo } from "./core/lib/axios/request.interceptor";
-import CapacitacionesForm from "./CapacitacionesForm";
+import CapacitacionesForm from "./views/capacitaciones/CapacitacionesForm";
 import EmpleadosForm from "./EmpleadosForm";
 import PuestosForm from "./PuestoForm";
+
+
 setupInterceptorsTo(axios)
 
 const router = createBrowserRouter([
