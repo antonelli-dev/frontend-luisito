@@ -65,16 +65,13 @@ const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
     });
   };
 
-  const deleteElement = (id:any) => {
-  
+  const onDelete = (e: any) => {
+    axios.delete(`http://localhost:4000/ausencias/${e.data.id}`).then(x => alert("Se ha eliminado la ausencia correctamente"));
+  }
+
+  const onUpdate = (e: any) => {
+    axios.put(`http://localhost:4000/ausencias/${e.data.id}`, e.data).then(x => alert("Se ha guardado la ausencia correctamente."));
   };
-
-  
-
-  const editElement = () => {
-   
-  };
-
   return (
     <FormContainer onSubmit={handleSubmit} title="Añadir Ausencia">
       <div className="form-group">
@@ -99,7 +96,7 @@ const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
       </div>
       <button type="submit" className="submit-button">Enviar</button>
       <div style={{ marginTop: '20px',display:'flex', justifyContent:'center' }}>
-      <AusenciasTable data={ausenciasList} onDelete={deleteElement} onEdit={editElement}/>
+      <AusenciasTable data={ausenciasList} onDelete={onDelete} onEdit={onUpdate}/>
       </div>
     </FormContainer>
   );

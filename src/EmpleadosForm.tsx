@@ -24,8 +24,7 @@ interface EmpleadosFormData {
 interface EmpleadosFormProps {}
 
 const EmpleadosForm: React.FC<EmpleadosFormProps> = ({}) => {
-  const [showTable, setShowTable] = useState(false);
-  const [dataEmpleado, setDataEmpleado] = useState([]);
+  const [dataEmpleado, setDataEmpleado] = useState<[]>([]);
   const nombresRef = useRef<HTMLInputElement>(null);
   const apellidosRef = useRef<HTMLInputElement>(null);
   const fechanacimientoRef = useRef<HTMLInputElement>(null);
@@ -64,6 +63,7 @@ const EmpleadosForm: React.FC<EmpleadosFormProps> = ({}) => {
     })
       .then((response) => {
         alert("Se ha creado la aerolínea correctamente.");
+        fetchData();
       })
       .catch((error) => {
         console.log(error);
@@ -71,64 +71,28 @@ const EmpleadosForm: React.FC<EmpleadosFormProps> = ({}) => {
       });
   };
 
-  const actualizarEmpleados = () => {
+  const fetchData=()=>{
     axios({
       method: "get",
-      url: "http://localhost:4000/empleados",
-      responseType: "json",
-    })
-      .then((response) => {
-        setDataEmpleado(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("Ha ocurrido un error al obtener los empleados.");
-      });
-  };
-
-  const eliminarEmpleado = (id: any) => {
-    axios.delete(`http://localhost:4000/empleados/${id}`)
-      .then((response) => {
-        setDataEmpleado(dataEmpleado.filter((empleado: any) => empleado.id !== id));
-        console.log("Empleado eliminado:", id);
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("Ha ocurrido un error al eliminar el empleado.");
-      });
-  };
+      url: "http://localhost:4000/empleados"
+    }).then((response) => {
+      setDataEmpleado(response.data);
+    }).catch((error) => {
+      console.error("Error fetching empleados data:", error);
+      alert("Ha ocurrido un error al obtener los empleados.");
+    });
+  }
 
   useEffect(() => {
-    axios({
-      method: "get",
-      url: "http://localhost:4000/empleados",
-      responseType: "json",
-    })
-      .then((response) => {
-        setDataEmpleado(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("Ha ocurrido un error al obtener los empleados.");
-      });
+   fetchData();
   }, []);
 
-  const handleShowTable = () => {
-    setShowTable(true);
-  };
+  const onDelete = (e: any) => {
+    axios.delete(`http://localhost:4000/empleados/${e.data.id}`).then(x => alert("Se ha eliminado el empleado correctamente"));
+  }
 
-  const handleCloseTable = () => {
-    setShowTable(false);
-  };
-
-  const handleEdit = (row: any) => {
-    console.log("Edit row:", row);
-  };
-
-  const handleDelete = (id: any) => {
-    console.log(`entrando ${id}`);
-    eliminarEmpleado(id);
+  const onEdit = (e: any) => {
+    axios.put(`http://localhost:4000/empleados/${e.data.id}`, e.data).then(x => alert("Se ha guardado el empleado correctamente."));
   };
 
   return (
@@ -189,8 +153,8 @@ const EmpleadosForm: React.FC<EmpleadosFormProps> = ({}) => {
       </button>
       <EmpleadosTable
         data={dataEmpleado}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
+        onEdit={onEdit}
+        onDelete={onDelete}
       />
     </FormContainer>
   );
