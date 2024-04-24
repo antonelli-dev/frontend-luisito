@@ -104,9 +104,7 @@ const CapacitacionesForm: React.FC<CapacitacionesFormProps> = ({ onSubmit }) => 
         <ValidationRule type="required" message="Fecha final"></ValidationRule>
 
         </Column>
-        <Column caption="Acciones">
-        <Button name="edit" template={btnEditarTemplate}></Button>
-        </Column>
+
         <Editing
           mode="row"
           allowUpdating={true}
