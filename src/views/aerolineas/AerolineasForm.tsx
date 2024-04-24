@@ -18,7 +18,6 @@ interface AerolineasFormProps {
 
 const AerolineasForm: React.FC<AerolineasFormProps> = ({ onSubmit }) => {
   const [aerolineasData, setAerolineas] = useState<AerolineaDto[]>([]);
-  const aerolineasRef = useRef<HTMLInputElement>(null);
   const nombreRef = useRef<HTMLInputElement>(null);
   const descripcionRef = useRef<HTMLInputElement>(null);
   const [showDialog, setShowDialog] = useState(false);
@@ -92,10 +91,6 @@ useEffect(() => {
 
   return (
     <FormContainer onSubmit={handleSubmit} title="Añadir Aerolínea">
-      <div className="form-group">
-        <label htmlFor="aerolineas">Aerolínea:</label>
-        <input type="text" id="aerolineas" ref={aerolineasRef} />
-      </div>
       <div className="form-group">
         <label htmlFor="nombre">Nombre:</label>
         <input type="text" id="nombre" ref={nombreRef} />
