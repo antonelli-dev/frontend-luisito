@@ -43,8 +43,8 @@ const AerolineasForm: React.FC<AerolineasFormProps> = ({ onSubmit }) => {
         method: "post",
         url: "http://localhost:4000/aerolineas",
         data: {
-          descripcion: nombre,
-          nombre: descripcion
+          descripcion: descripcion,
+          nombre: nombre
         } as CrearAerolineaDto,
         responseType: 'json'
       }).then(response => {
