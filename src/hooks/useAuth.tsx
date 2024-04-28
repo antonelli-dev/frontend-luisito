@@ -1,6 +1,8 @@
+import { AuthenticatedUser } from "../dtos/AuthenticatedUser.dto";
+
 export interface IUserAuth {
     isLoggedIn: boolean,
-    setLoggedIn: (val: boolean) => void;
+    setLoggedIn: (val: boolean, userData: AuthenticatedUser | undefined) => void;
 };
 
 export function useAuth(): IUserAuth {
@@ -10,9 +12,18 @@ export function useAuth(): IUserAuth {
 
     const returnValues: IUserAuth = {
         isLoggedIn: localStorage.getItem("isLoggedIn") === "true",
-        setLoggedIn(val) {
+        setLoggedIn(val, userData) {
+
+            console.log("userdata ", userData)
             localStorage.setItem("isLoggedIn", `${val}`);
-        },
+
+            if( userData !== undefined && userData !== null ) {
+                localStorage.setItem("userData", JSON.stringify(userData));
+            } else {
+                localStorage.removeItem("userData");
+            }
+        }
+            
     };
     return returnValues;
     

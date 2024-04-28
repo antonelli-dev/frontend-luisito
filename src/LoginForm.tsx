@@ -1,6 +1,8 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./hooks/useAuth";
+import { AuthenticatedUser } from "./dtos/AuthenticatedUser.dto";
+import axios from "axios";
 
 interface AusenciasFormProps {
     onSubmit: null;
@@ -19,14 +21,20 @@ export const LoginForm = ({ onSubmit }: AusenciasFormProps) => {
         const user = usuario.current?.value;
         const password = claveAcceso.current?.value;
 
+        axios.post("http://localhost:4000/auth/login", {
+            nombre: user,
+            password: password
+        }).then( response => {
 
-        if( user === 'luis' && password === 'dev' ) {
-           
-            setLoggedIn(true);
-            navigate('/')
-        } else {
-            alert("El nombre de usuario o contraseña con incorrectos.");
-        }
+            if( response.status !== 200 ) {
+                alert("El nombre de usuario o contraseña no es correcto");
+            }
+            
+            setLoggedIn(true, response.data);
+            navigate('/');
+
+
+        }).catch( () => alert("Algo ha salido mal al consultar al servidor.") );
     };
 
     return (

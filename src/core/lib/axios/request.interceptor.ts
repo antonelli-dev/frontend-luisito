@@ -7,20 +7,14 @@ interface HttpBadResponse {
 };
 
 const onResponse = (response: AxiosResponse): AxiosResponse => {
-    console.info(`[response] [${JSON.stringify(response)}]`);
-
-    
     return response;
 }
 
 const onResponseError = (error: AxiosError): Promise<AxiosError> => {
-    console.error(`[response error] [${JSON.stringify(error.response)}]`);
 
     // const setOnError = authStore( (state) => state.setOnError );
     //  setOnError(true, "prueba")
-
-    console.log("ssss amo")
-
+    
     // const event = new CustomEvent<HttpBadResponse>("onAxiosInterceptError", {
     //      detail: {
     //          message: (error?.response?.data as HttpBadResponse).message,

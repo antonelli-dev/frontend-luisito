@@ -73,7 +73,7 @@ function SidebarContent() {
 
   const logout = () => {
     navigate("/login")
-    setLoggedIn(false);
+    setLoggedIn(false, undefined);
     
   };
 

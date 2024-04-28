@@ -81,13 +81,6 @@ useEffect(() => {
   })
 },[])
 
-  const handleShowDialog = () => {
-    setShowDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setShowDialog(false);
-  };
 
   return (
     <FormContainer onSubmit={handleSubmit} title="Añadir Aerolínea">
