@@ -1,4 +1,4 @@
-import React, { useRef, useState,useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import FormContainer from "./FormContainer";
 import "./AusenciasForm.css";
 import AusenciasTable from "./AusenciasTable";
@@ -16,32 +16,53 @@ interface AusenciasFormData {
 interface AusenciasFormProps {
   onSubmit: null;
 }
+interface Empleado {
+  id: number;
+  nombres: string;
+  apellidos: string;
+}
+const [dataEmpleado, setDataEmpleado] = useState<Empleado[]>([]);
 
 const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
-
   const [ausenciasList, setAusencias] = useState<[]>([]);
-  const idEmpleadoRef = useRef<HTMLInputElement>(null);
+  const idEmpleadoRef = useRef<HTMLSelectElement>(null);
   const tipoRef = useRef<HTMLInputElement>(null);
   const fechaInicioRef = useRef<HTMLInputElement>(null);
   const descripcionRef = useRef<HTMLInputElement>(null);
   const fechaFinRef = useRef<HTMLInputElement>(null);
   const [showTable, setShowTable] = useState(false);
 
-  const fetchData=()=>{
+  const fetchData = () => {
     axios({
       method: "get",
-      url: "http://localhost:4000/ausencias"
-    }).then((response) => {
-      setAusencias(response.data);
-    }).catch((error) => {
-      console.error("Error fetching ausencias data:", error);
-      alert("Ha ocurrido un error al obtener las ausencias.");
-    });
-  }
+      url: "http://localhost:4000/ausencias",
+    })
+      .then((response) => {
+        setAusencias(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching ausencias data:", error);
+        alert("Ha ocurrido un error al obtener las ausencias.");
+      });
+  };
+  const fetchDataEmpleado = () => {
+    axios({
+      method: "get",
+      url: "http://localhost:4000/empleados",
+    })
+      .then((response) => {
+        setDataEmpleado(response.data as Empleado[]);
+      })
+      .catch((error) => {
+        console.error("Error fetching empleados data:", error);
+        alert("Ha ocurrido un error al obtener los empleados.");
+      });
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchData();
-  },[]);
+    fetchDataEmpleado();
+  }, []);
 
   const handleSubmit = () => {
     axios({
@@ -54,30 +75,43 @@ const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
         fecha_inicio: new Date(fechaInicioRef.current?.value || new Date()),
         fecha_final: new Date(fechaFinRef.current?.value || new Date()),
       } as CrearAusenciaDTO,
-      responseType: 'json'
-    }).then(response => {
-      fetchData();
-      alert("Se ha creado la ausencia correctamente.")
-      
+      responseType: "json",
     })
-    .catch(error => {
-      alert("Ha ocurrido un error al crear la aerolínea.");
-    });
+      .then((response) => {
+        fetchData();
+        alert("Se ha creado la ausencia correctamente.");
+      })
+      .catch((error) => {
+        alert("Ha ocurrido un error al crear la aerolínea.");
+      });
   };
 
   const onDelete = (e: any) => {
-    axios.delete(`http://localhost:4000/ausencias/${e.data.id}`).then(x => alert("Se ha eliminado la ausencia correctamente"));
-  }
+    axios
+      .delete(`http://localhost:4000/ausencias/${e.data.id}`)
+      .then((x) => alert("Se ha eliminado la ausencia correctamente"));
+  };
 
   const onUpdate = (e: any) => {
-    axios.put(`http://localhost:4000/ausencias/${e.data.id}`, e.data).then(x => alert("Se ha guardado la ausencia correctamente."));
+    axios
+      .put(`http://localhost:4000/ausencias/${e.data.id}`, e.data)
+      .then((x) => alert("Se ha guardado la ausencia correctamente."));
   };
   return (
     <FormContainer onSubmit={handleSubmit} title="Añadir Ausencia">
-      <div className="form-group">
+      {/* <div className="form-group">
         <label htmlFor="idEmpleado">ID Empleado:</label>
         <input type="number" id="idEmpleado" ref={idEmpleadoRef} />
+      </div> */}
+      <div className="form-group">
+        <label htmlFor="idEmpleado">ID Empleado:</label>
+        <select id="idEmpleado" ref={idEmpleadoRef} >
+            {dataEmpleado.map((empleado) =>{
+             return <option value={empleado.id}>{empleado.nombres}</option>
+            })}
+        </select>
       </div>
+       
       <div className="form-group">
         <label htmlFor="tipo">Tipo:</label>
         <input type="text" id="tipo" ref={tipoRef} />
@@ -94,15 +128,20 @@ const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
         <label htmlFor="fechaFin">Fecha de Fin:</label>
         <input type="date" id="fechaFin" ref={fechaFinRef} />
       </div>
-      <button type="submit" className="submit-button">Enviar</button>
-      <div style={{ marginTop: '20px',display:'flex', justifyContent:'center' }}>
-      <AusenciasTable data={ausenciasList} onDelete={onDelete} onEdit={onUpdate}/>
+      <button type="submit" className="submit-button">
+        Enviar
+      </button>
+      <div
+        style={{ marginTop: "20px", display: "flex", justifyContent: "center" }}
+      >
+        <AusenciasTable
+          data={ausenciasList}
+          onDelete={onDelete}
+          onEdit={onUpdate}
+        />
       </div>
     </FormContainer>
   );
 };
 
 export default AusenciasForm;
-
-
-
