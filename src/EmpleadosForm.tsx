@@ -62,12 +62,12 @@ const EmpleadosForm: React.FC<EmpleadosFormProps> = ({}) => {
       responseType: "json",
     })
       .then((response) => {
-        alert("Se ha creado la aerolínea correctamente.");
+        alert("Se ha creado el empleado correctamente.");
         fetchData();
       })
       .catch((error) => {
         console.log(error);
-        alert("Ha ocurrido un error al crear la aerolínea.");
+        alert("Ha ocurrido un error al crear el empleado.");
       });
   };
 

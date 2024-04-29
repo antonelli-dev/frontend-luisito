@@ -57,7 +57,7 @@ const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
       responseType: 'json'
     }).then(response => {
       fetchData();
-      alert("Se ha creado la aerolínea correctamente.")
+      alert("Se ha creado la ausencia correctamente.")
       
     })
     .catch(error => {

@@ -100,7 +100,6 @@ function SidebarContent() {
         <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={()=> handleNavigate("/empleados")}><FontAwesomeIcon icon={faUserTie} />{' '}Empleados </MenuItem>
         <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={()=> handleNavigate("/historiallaboral")}><FontAwesomeIcon icon={faHistory} />{' '} Historial Laboral </MenuItem>
         <MenuItem style={{ color: 'white', fontWeight: 'bold' }} onClick={()=> handleNavigate("/puestos")}><FontAwesomeIcon icon={faBriefcase} />{' '} Puestos </MenuItem>
-        <MenuItem style={{ color: 'white', fontWeight: 'bold' }}><FontAwesomeIcon icon={faUsers} />{' '} Usuarios </MenuItem>
         <MenuItem style={{ color: '#d80000', fontWeight: 'bold' }} onClick={() => logout()}><FontAwesomeIcon icon={faSignOutAlt} style={{ color: '#d80000' }}  /> Cerrar Sesion </MenuItem>
       </Menu>
     </Sidebar>

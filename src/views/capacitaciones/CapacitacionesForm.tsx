@@ -162,7 +162,6 @@ const CapacitacionesForm: React.FC<CapacitacionesFormProps> = ({
             deleteRow="Eliminar"
           ></Texts>
         </Editing>
-
         <Export enabled={true} />
       </DataGrid>
 

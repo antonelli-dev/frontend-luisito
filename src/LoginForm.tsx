@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./hooks/useAuth";
+import logluis from './assets/logluis.png'
 import { AuthenticatedUser } from "./dtos/AuthenticatedUser.dto";
 import axios from "axios";
 
@@ -27,31 +28,31 @@ export const LoginForm = ({ onSubmit }: AusenciasFormProps) => {
         }).then( response => {
 
             if( response.status !== 200 ) {
-                alert("El nombre de usuario o contraseña no es correcto");
+                alert("El nombre de usuario o contraseña no es correcto.");
             }
             
             setLoggedIn(true, response.data);
             navigate('/');
 
 
-        }).catch( () => alert("Algo ha salido mal al consultar al servidor.") );
+        }).catch( () => alert("El nombre de usuario o contraseña no es correcto.") );
     };
 
     return (
         <form className="form-container-auth" onSubmit={handleSubmitForm}>
 
-            <h1 style={{textAlign: "center"}}>Inicio de sesión</h1>
+            <h1 style={{textAlign: "center"}}>Inicio de sesión  <img style={{height:"60px", width:"65px", marginLeft:"60px", borderBottomRightRadius:"100%"}} src={logluis} alt="Logo" /></h1>
 
             <div className="form-group">
                 <div className="form-group">
-                    <label htmlFor="usuario">Nombre de usuario:</label>
-                    <input type="text" id="usuario" ref={usuario} />
+                    <label htmlFor="usuario">Usuario:</label>
+                    <input type="text" id="usuario" ref={usuario} style={{width:"100%"}}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="claveAcceso">Contraseña:</label>
-                    <input type="password" id="claveAcceso" ref={claveAcceso} />
+                    <input type="password" id="claveAcceso" ref={claveAcceso} style={{width:"95%"}}/>
                 </div>
-                <button type="submit" className="submit-button">Enviar</button>
+                <button type="submit" className="submit-button">Iniciar Sesion</button>
             </div>
         </form>
     );
