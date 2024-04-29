@@ -32,8 +32,8 @@ const EmpleadosForm: React.FC<EmpleadosFormProps> = ({}) => {
   const direccionRef = useRef<HTMLInputElement>(null);
   const telefonoRef = useRef<HTMLInputElement>(null);
   const correoelectronicoRef = useRef<HTMLInputElement>(null);
-  const idaerolineaRef = useRef<HTMLInputElement>(null);
-  const idpuestoRef = useRef<HTMLInputElement>(null);
+  const idaerolineaRef = useRef<HTMLSelectElement>(null);
+  const idpuestoRef = useRef<HTMLSelectElement>(null);
   const fechacontratacionRef = useRef<HTMLInputElement>(null);
   const salarioRef = useRef<HTMLInputElement>(null);
 
@@ -183,7 +183,7 @@ const EmpleadosForm: React.FC<EmpleadosFormProps> = ({}) => {
       </div>
       <div className="form-group">
         <label htmlFor="aerolinea_id">ID de Aerolínea:</label>
-        <select name="aerolinea_id" id="aerolinea_id">
+        <select name="aerolinea_id" id="aerolinea_id" ref={idaerolineaRef}>
           {aerolineasData.map((aerolinea) => (
             <option value={aerolinea.id_de_aerolinea}>
               {aerolinea.nombre}
@@ -193,7 +193,7 @@ const EmpleadosForm: React.FC<EmpleadosFormProps> = ({}) => {
       </div>
       <div className="form-group">
         <label htmlFor="puesto_id">ID de puesto:</label>
-        <select name="puesto_id" id="puesto_id">
+        <select name="puesto_id" id="puesto_id" ref={idpuestoRef}>
           {puestoData.map((puesto) => (
             <option value={puesto.id}>
               {puesto.nombre}
@@ -201,18 +201,13 @@ const EmpleadosForm: React.FC<EmpleadosFormProps> = ({}) => {
           ))}
         </select>
       </div>
-
-      {/* <div className="form-group">
-        <label htmlFor="puesto_id">ID de Puesto:</label>
-        <input type="number" id="puesto_id" ref={idpuestoRef} />
-      </div> */}
       <div className="form-group">
         <label htmlFor="fecha_contratacion">Fecha de Contratación:</label>
         <input type="date" id="fecha_contratacion" ref={fechacontratacionRef} />
       </div>
       <div className="form-group">
         <label htmlFor="salario">Salario:</label>
-        <input type="number" id="salario" step="0.01" ref={salarioRef} />
+        <input type="number" id="salario" ref={salarioRef} />
       </div>
       <button type="submit" className="submit-button">
         Enviar

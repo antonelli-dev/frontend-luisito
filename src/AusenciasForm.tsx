@@ -25,7 +25,6 @@ interface Empleado {
 
 const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
   const [ausenciasList, setAusencias] = useState<[]>([]);
-  const [dataEmpleado, setDataEmpleado] = useState<Empleado[]>([]);
   const idEmpleadoRef = useRef<HTMLSelectElement>(null);
   const tipoRef = useRef<HTMLInputElement>(null);
   const fechaInicioRef = useRef<HTMLInputElement>(null);
