@@ -25,6 +25,7 @@ const PuestosForm: React.FC<PuestosFormProps> = ({ onSubmit }) => {
   const descripcionRef = useRef<HTMLInputElement>(null);
   const salarioRef = useRef<HTMLInputElement>(null);
 
+  
   const fetchData = () => {
     axios({
       method: "GET",

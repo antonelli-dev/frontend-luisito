@@ -4,7 +4,11 @@ import DataGrid, {
   Editing,
   Texts,
   RequiredRule,
+  Export,
 } from 'devextreme-react/data-grid';
+import { Workbook } from 'exceljs';
+import saveAs from 'file-saver';
+import { exportDataGrid } from 'devextreme/excel_exporter';
 
 interface AusenciasTableProps {
   data: any[];
@@ -13,6 +17,25 @@ interface AusenciasTableProps {
 }
 
 const AusenciasTable: React.FC<AusenciasTableProps> = ({ data, onEdit, onDelete }) => {
+
+  function onExporting(e: any) {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet('Main sheet');
+    exportDataGrid({
+        component: e.component,
+        worksheet: worksheet,
+        customizeCell: function(options) {
+            options.excelCell.font = { name: 'Arial', size: 12 };
+            options.excelCell.alignment = { horizontal: 'left' };
+        } 
+    }).then(function() {
+        workbook.xlsx.writeBuffer()
+            .then(function(buffer) {
+                saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Ausencias.xlsx');
+            });
+    });
+}
+
   return (
     <DataGrid
       dataSource={data}
@@ -20,6 +43,7 @@ const AusenciasTable: React.FC<AusenciasTableProps> = ({ data, onEdit, onDelete 
       showBorders={true}
       onRowRemoved={onDelete}
       onRowUpdated={onEdit}
+      onExporting={onExporting}
     >
       <Column dataField="id_empleado" caption="ID Empleado" allowEditing={false} />
       <Column dataField="id" caption="ID" allowEditing={false} />
@@ -31,6 +55,7 @@ const AusenciasTable: React.FC<AusenciasTableProps> = ({ data, onEdit, onDelete 
       <Column dataField="tipo" caption="Tipo">
         <RequiredRule />
       </Column>
+      <Export enabled={true} />
       <Editing
         mode="row"
         allowUpdating={true}

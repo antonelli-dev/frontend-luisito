@@ -4,7 +4,13 @@ import DataGrid, {
   Editing,
   Texts,
   RequiredRule,
+  Export,
 } from 'devextreme-react/data-grid';
+
+import { Workbook } from 'exceljs';
+import saveAs from 'file-saver';
+import { exportDataGrid } from 'devextreme/excel_exporter';
+
 
 interface EmpleadosTableProps {
   data: any[]; 
@@ -13,6 +19,25 @@ interface EmpleadosTableProps {
 }
 
 const EmpleadosTable: React.FC<EmpleadosTableProps> = ({ data, onEdit, onDelete }) => {
+
+  function onExporting(e: any) {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet('Main sheet');
+    exportDataGrid({
+        component: e.component,
+        worksheet: worksheet,
+        customizeCell: function(options) {
+            options.excelCell.font = { name: 'Arial', size: 12 };
+            options.excelCell.alignment = { horizontal: 'left' };
+        } 
+    }).then(function() {
+        workbook.xlsx.writeBuffer()
+            .then(function(buffer) {
+                saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Empleados.xlsx');
+            });
+    });
+}
+
   return (
     <DataGrid
       dataSource={data}
@@ -20,6 +45,7 @@ const EmpleadosTable: React.FC<EmpleadosTableProps> = ({ data, onEdit, onDelete 
       showBorders={true}
       onRowRemoved={onDelete}
       onRowUpdated={onEdit}
+      onExporting={onExporting}
     >
       <Column dataField="id" caption="ID" allowEditing={false} />
       <Column dataField="nombres" caption="Nombres">
@@ -39,6 +65,8 @@ const EmpleadosTable: React.FC<EmpleadosTableProps> = ({ data, onEdit, onDelete 
       <Column dataField="puesto_id" caption="ID de Puesto" />
       <Column dataField="fecha_contratacion" caption="Fecha de Contratación" dataType="date" />
       <Column dataField="salario" caption="Salario" dataType="number" />
+      <Export enabled={true} />
+      
       <Editing
         mode="row"
         allowUpdating={true}

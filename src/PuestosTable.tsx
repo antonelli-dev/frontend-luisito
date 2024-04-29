@@ -1,10 +1,11 @@
 // EmpleadosTable.tsx
 import React from 'react';
-import {
-  Grid,
-  Table,
-  TableHeaderRow
-} from '@devexpress/dx-react-grid-material-ui';
+import { DataGrid } from 'devextreme-react';
+import { Column, Export } from 'devextreme-react/cjs/data-grid';
+
+import { Workbook } from 'exceljs';
+import saveAs from 'file-saver';
+import { exportDataGrid } from 'devextreme/excel_exporter';
 
 interface PuestoTableProps {
   data: any[]; 
@@ -21,14 +22,33 @@ const EmpleadosTable: React.FC<PuestoTableProps> = ({ data,onDelete,onEdit }) =>
 
   ];
 
+  function onExporting(e: any) {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet('Main sheet');
+    exportDataGrid({
+        component: e.component,
+        worksheet: worksheet,
+        customizeCell: function(options) {
+            options.excelCell.font = { name: 'Arial', size: 12 };
+            options.excelCell.alignment = { horizontal: 'left' };
+        } 
+    }).then(function() {
+        workbook.xlsx.writeBuffer()
+            .then(function(buffer) {
+                saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Puestos.xlsx');
+            });
+    });
+}
+
   return (
-    <Grid
-      rows={data}
-      columns={columns}
-    >
-      <Table />
-      <TableHeaderRow />
-    </Grid>
+    <DataGrid dataSource={data} keyExpr={'id'} onExporting={onExporting} onRowRemoved={onDelete} onRowUpdated={onEdit} showColumnHeaders={true}>
+      <Column dataField='id' caption='Id'></Column>
+      <Column dataField='nombre' caption='Nombre'></Column>
+      <Column dataField='descripcion' caption='Descripción'></Column>
+      <Column dataField='salario' caption='Salario'></Column>
+
+      <Export enabled={true}></Export>
+    </DataGrid>
   );
 };
 

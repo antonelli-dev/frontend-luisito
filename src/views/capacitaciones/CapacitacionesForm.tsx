@@ -8,9 +8,14 @@ import DataGrid, {
   Button,
   Column,
   Editing,
+  Export,
   Texts,
   ValidationRule,
 } from "devextreme-react/data-grid";
+
+import { Workbook } from 'exceljs';
+import saveAs from 'file-saver';
+import { exportDataGrid } from 'devextreme/excel_exporter';
 
 interface CapacitacionesFormProps {
   onSubmit: null;
@@ -26,6 +31,24 @@ const CapacitacionesForm: React.FC<CapacitacionesFormProps> = ({
   const fechaInicioRef = useRef<HTMLInputElement>(null);
   const fechaFinalRef = useRef<HTMLInputElement>(null);
   const [showTable, setShowTable] = useState(false);
+
+  function onExporting(e: any) {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet('Main sheet');
+    exportDataGrid({
+        component: e.component,
+        worksheet: worksheet,
+        customizeCell: function(options) {
+            options.excelCell.font = { name: 'Arial', size: 12 };
+            options.excelCell.alignment = { horizontal: 'left' };
+        } 
+    }).then(function() {
+        workbook.xlsx.writeBuffer()
+            .then(function(buffer) {
+                saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'Aerolineas.xlsx');
+            });
+    });
+}
 
   useEffect(() => {
     fetchData();
@@ -99,6 +122,7 @@ const CapacitacionesForm: React.FC<CapacitacionesFormProps> = ({
         onRowRemoved={onDelete}
         onRowUpdated={onUpdate}
         showColumnHeaders={true}
+        onExporting={onExporting}
       >
         <Column dataField="id" caption="Id" allowEditing={false}></Column>
         <Column dataField="nombre" caption="Nombre">
@@ -138,6 +162,8 @@ const CapacitacionesForm: React.FC<CapacitacionesFormProps> = ({
             deleteRow="Eliminar"
           ></Texts>
         </Editing>
+
+        <Export enabled={true} />
       </DataGrid>
 
       {/* <CapacitacionesTable data={demoData} /> */}

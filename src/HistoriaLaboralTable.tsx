@@ -1,5 +1,9 @@
 import React from 'react';
-import DataGrid, { Column, Editing, Texts, RequiredRule } from 'devextreme-react/data-grid';
+import DataGrid, { Column, Editing, Texts, RequiredRule, Export } from 'devextreme-react/data-grid';
+
+import { Workbook } from 'exceljs';
+import saveAs from 'file-saver';
+import { exportDataGrid } from 'devextreme/excel_exporter';
 
 interface HistorialLaboralTableProps {
   data: any[]; 
@@ -8,6 +12,25 @@ interface HistorialLaboralTableProps {
 }
 
 const HistorialLaboralTable: React.FC<HistorialLaboralTableProps> = ({ data, onEdit, onDelete }) => {
+
+  function onExporting(e: any) {
+    const workbook = new Workbook();
+    const worksheet = workbook.addWorksheet('Main sheet');
+    exportDataGrid({
+        component: e.component,
+        worksheet: worksheet,
+        customizeCell: function(options) {
+            options.excelCell.font = { name: 'Arial', size: 12 };
+            options.excelCell.alignment = { horizontal: 'left' };
+        } 
+    }).then(function() {
+        workbook.xlsx.writeBuffer()
+            .then(function(buffer) {
+                saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'HistorialLaboral.xlsx');
+            });
+    });
+}
+
   return (
     <DataGrid
       dataSource={data}
@@ -15,6 +38,7 @@ const HistorialLaboralTable: React.FC<HistorialLaboralTableProps> = ({ data, onE
       showBorders={true}
       onRowRemoved={onDelete}
       onRowUpdated={onEdit}
+      onExporting={onExporting}
     >
       <Column dataField="id_de_historial" caption="ID" allowEditing={false} />
       <Column dataField="fecha_inicio" caption="Fecha de Inicio" dataType="date" />
@@ -32,6 +56,7 @@ const HistorialLaboralTable: React.FC<HistorialLaboralTableProps> = ({ data, onE
           deleteRow="Eliminar"
         />
       </Editing>
+      <Export enabled={true} ></Export>
     </DataGrid>
   );
 };
