@@ -17,8 +17,16 @@ const HistorialLaboralForm = () => {
     nombres: string;
     apellidos: string;
   }
-  
   const [dataEmpleado, setDataEmpleado] = useState<Empleado[]>([]);
+  interface Puesto {
+    id: number;
+    nombre: string;
+    descripcion: string;
+    salario:number;
+  }
+  const [dataPuesto, setDataPuesto] = useState<Puesto[]>([]);
+
+
   const fechaInicioRef = useRef<HTMLInputElement>(null);
   const idEmpleadoRef = useRef<HTMLSelectElement>(null);
   const idPuestoRef = useRef<HTMLSelectElement>(null);
@@ -26,7 +34,17 @@ const HistorialLaboralForm = () => {
   useEffect(() => {
     fetchData();
     fetchDataEmpleado();
+    fetchDataPuesto();
   }, []);
+
+  const fetchDataPuesto = () => {
+    axios({
+      method: "GET",
+      url: "http://localhost:4000/puestos"
+    }).then(response =>{
+      setDataPuesto(response.data);
+    })
+  };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -102,15 +120,8 @@ const HistorialLaboralForm = () => {
         <label htmlFor="fechaInicio">Fecha de Inicio:</label>
         <input type="date" id="fechaInicio" ref={fechaInicioRef} required />
       </div>
-      {/* <div className="form-group">
-        <label htmlFor="idEmpleado">ID de Empleado:</label>
-        <input
-          type="text"
-          id="idEmpleado"
-          ref={idEmpleadoRef}
-          required
-        />
-      </div> */}
+    
+      
       <div className="form-group">
         <label htmlFor="idEmpleado">ID de Empleado:</label>
         <select name="idEmpleado" id="idEmpleado" ref={idEmpleadoRef} required>
@@ -121,11 +132,18 @@ const HistorialLaboralForm = () => {
           ))}
         </select>
       </div>
-
-      {/* <div className="form-group">
+      <div className="form-group">
         <label htmlFor="idPuesto">ID de Puesto:</label>
-        <input type="text" id="idPuesto" ref={idPuestoRef} required />
-      </div> */}
+        <select name="idPuesto" id="idPuesto" ref={idPuestoRef} required>
+          {dataPuesto.map((Puesto) => (
+            <option key={Puesto.id} value={Puesto.id}>
+              {Puesto.nombre} 
+            </option>
+          ))}
+        </select>
+      </div>
+
+   
       <button type="submit" className="submit-button">Enviar</button>
       <HistorialLaboralTable
         data={historialLaboraltodos}
