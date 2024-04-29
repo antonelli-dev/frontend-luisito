@@ -1,7 +1,5 @@
-// EmpleadosTable.tsx
 import React from 'react';
-import { DataGrid } from 'devextreme-react';
-import { Column, Export } from 'devextreme-react/cjs/data-grid';
+import DataGrid, { Column, Editing, Texts, RequiredRule, Export } from 'devextreme-react/data-grid';
 
 import { Workbook } from 'exceljs';
 import saveAs from 'file-saver';
@@ -46,7 +44,18 @@ const EmpleadosTable: React.FC<PuestoTableProps> = ({ data,onDelete,onEdit }) =>
       <Column dataField='nombre' caption='Nombre'></Column>
       <Column dataField='descripcion' caption='Descripción'></Column>
       <Column dataField='salario' caption='Salario'></Column>
-
+      <Editing
+        mode="row"
+        allowUpdating={true}
+        allowDeleting={true}
+      >
+        <Texts
+          editRow="Editar"
+          saveRowChanges="Guardar"
+          cancel="Cancelar"
+          deleteRow="Eliminar"
+        />
+        </Editing>
       <Export enabled={true}></Export>
     </DataGrid>
   );
