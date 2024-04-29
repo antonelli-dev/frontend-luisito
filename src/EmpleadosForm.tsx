@@ -71,28 +71,77 @@ const EmpleadosForm: React.FC<EmpleadosFormProps> = ({}) => {
       });
   };
 
-  const fetchData=()=>{
+  const fetchData = () => {
     axios({
       method: "get",
-      url: "http://localhost:4000/empleados"
-    }).then((response) => {
-      setDataEmpleado(response.data);
+      url: "http://localhost:4000/empleados",
+    })
+      .then((response) => {
+        setDataEmpleado(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching empleados data:", error);
+        alert("Ha ocurrido un error al obtener los empleados.");
+      });
+  };
+
+  const [aerolineasData, setAerolineas] = useState<AerolineaDto[]>([]);
+  const [puestoData, setPuesto] = useState<PuestosFormData[]>([]);
+
+  const fetchDataAerolinea = () => {
+    axios({
+      method: "get",
+      url: "http://localhost:4000/aerolineas",
+    })
+      .then((response) => {
+        setAerolineas(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching aerolineas data:", error);
+        alert("Ha ocurrido un error al obtener las aerolíneas.");
+      });
+  };
+
+  const fetchDataPuestos = () => {
+    axios({
+      method: "GET",
+      url: "http://localhost:4000/puestos"
+    }).then(response =>{
+      setPuesto(response.data);
     }).catch((error) => {
-      console.error("Error fetching empleados data:", error);
-      alert("Ha ocurrido un error al obtener los empleados.");
+      alert("Ha ocurrido un error al obtener los puestos.");
     });
+  };
+
+  class AerolineaDto {
+    id_de_aerolinea: number = 0;
+    nombre: string = "";
+    descripcion: string = "";
+  }
+
+  interface PuestosFormData {
+    id: number;
+    nombre: string;
+    descripcion: string;
+    salario: number;
   }
 
   useEffect(() => {
-   fetchData();
+    fetchData();
+    fetchDataAerolinea();
+    fetchDataPuestos();
   }, []);
 
   const onDelete = (e: any) => {
-    axios.delete(`http://localhost:4000/empleados/${e.data.id}`).then(x => alert("Se ha eliminado el empleado correctamente"));
-  }
+    axios
+      .delete(`http://localhost:4000/empleados/${e.data.id}`)
+      .then((x) => alert("Se ha eliminado el empleado correctamente"));
+  };
 
   const onEdit = (e: any) => {
-    axios.put(`http://localhost:4000/empleados/${e.data.id}`, e.data).then(x => alert("Se ha guardado el empleado correctamente."));
+    axios
+      .put(`http://localhost:4000/empleados/${e.data.id}`, e.data)
+      .then((x) => alert("Se ha guardado el empleado correctamente."));
   };
 
   return (
@@ -134,12 +183,29 @@ const EmpleadosForm: React.FC<EmpleadosFormProps> = ({}) => {
       </div>
       <div className="form-group">
         <label htmlFor="aerolinea_id">ID de Aerolínea:</label>
-        <input type="number" id="aerolinea_id" ref={idaerolineaRef} />
+        <select name="aerolinea_id" id="aerolinea_id">
+          {aerolineasData.map((aerolinea) => (
+            <option value={aerolinea.id_de_aerolinea}>
+              {aerolinea.nombre}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="form-group">
+        <label htmlFor="puesto_id">ID de puesto:</label>
+        <select name="puesto_id" id="puesto_id">
+          {puestoData.map((puesto) => (
+            <option value={puesto.id}>
+              {puesto.nombre}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* <div className="form-group">
         <label htmlFor="puesto_id">ID de Puesto:</label>
         <input type="number" id="puesto_id" ref={idpuestoRef} />
-      </div>
+      </div> */}
       <div className="form-group">
         <label htmlFor="fecha_contratacion">Fecha de Contratación:</label>
         <input type="date" id="fecha_contratacion" ref={fechacontratacionRef} />
@@ -151,11 +217,7 @@ const EmpleadosForm: React.FC<EmpleadosFormProps> = ({}) => {
       <button type="submit" className="submit-button">
         Enviar
       </button>
-      <EmpleadosTable
-        data={dataEmpleado}
-        onEdit={onEdit}
-        onDelete={onDelete}
-      />
+      <EmpleadosTable data={dataEmpleado} onEdit={onEdit} onDelete={onDelete} />
     </FormContainer>
   );
 };
