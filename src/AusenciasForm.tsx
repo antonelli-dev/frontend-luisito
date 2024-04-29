@@ -32,7 +32,7 @@ const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
   const descripcionRef = useRef<HTMLInputElement>(null);
   const fechaFinRef = useRef<HTMLInputElement>(null);
   const [showTable, setShowTable] = useState(false);
-
+  const [dataEmpleado, setDataEmpleado] = useState<Empleado[]>([]);
   const fetchData = () => {
     axios({
       method: "get",
@@ -100,10 +100,6 @@ const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
   };
   return (
     <FormContainer onSubmit={handleSubmit} title="Añadir Ausencia">
-      {/* <div className="form-group">
-        <label htmlFor="idEmpleado">ID Empleado:</label>
-        <input type="number" id="idEmpleado" ref={idEmpleadoRef} />
-      </div> */}
       <div className="form-group">
         <label htmlFor="idEmpleado">ID Empleado:</label>
         <select id="idEmpleado" ref={idEmpleadoRef} >
