@@ -63,6 +63,7 @@ const HistorialLaboralForm = () => {
         .post("http://localhost:4000/historialaboral", newHistorialLaboral)
         .then((response) => {
           alert("Historial laboral creado correctamente");
+          fetchData();
         })
         .catch((error) => {
           console.error("Error al crear historial laboral:", error);
