@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import FormContainer from "./FormContainer";
 import "./PuestoForm.css";
 import PuestosTable from "./PuestosTable";
@@ -19,13 +19,15 @@ const PuestosForm: React.FC<PuestosFormProps> = ({ onSubmit }) => {
   const [showTable, setShowTable] = useState(false);
   const [puestoData, setPuesto] = useState<[]>([]);
 
- 
-
   const nombreRef = useRef<HTMLInputElement>(null);
   const descripcionRef = useRef<HTMLInputElement>(null);
   const salarioRef = useRef<HTMLInputElement>(null);
 
-  
+
+  useEffect(() => {
+    fetchData(); 
+  });
+
   const fetchData = () => {
     axios({
       method: "GET",
@@ -72,7 +74,7 @@ const PuestosForm: React.FC<PuestosFormProps> = ({ onSubmit }) => {
         </div>
         <div className="form-group">
           <label htmlFor="salario">Salario:</label>
-          <input type="number" id="salario" step="0.01" ref={salarioRef} />
+          <input type="number" id="salario" ref={salarioRef} />
         </div>
         <button type="submit" className="submit-button">Enviar</button>
         <PuestosTable data={puestoData} onDelete={()=>{}} onEdit={()=>{}}/>
