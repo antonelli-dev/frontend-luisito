@@ -26,7 +26,7 @@ const PuestosForm: React.FC<PuestosFormProps> = ({ onSubmit }) => {
 
   useEffect(() => {
     fetchData(); 
-  });
+  },[]);
 
   const fetchData = () => {
     axios({

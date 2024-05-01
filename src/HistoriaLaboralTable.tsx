@@ -42,8 +42,8 @@ const HistorialLaboralTable: React.FC<HistorialLaboralTableProps> = ({ data, onE
     >
       <Column dataField="id_de_historial" caption="ID" allowEditing={false} />
       <Column dataField="fecha_inicio" caption="Fecha de Inicio" dataType="date" />
-      <Column dataField="id_empleado" caption="ID de Empleado" />
-      <Column dataField="id_de_puesto" caption="ID de Puesto" />
+      <Column dataField="empleado.nombres" caption="ID de Empleado" />
+      <Column dataField="puesto.nombre" caption="ID de Puesto" />
       <Editing
         mode="row"
         allowUpdating={true}
