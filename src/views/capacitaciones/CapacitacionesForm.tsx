@@ -16,6 +16,7 @@ import DataGrid, {
 import { Workbook } from 'exceljs';
 import saveAs from 'file-saver';
 import { exportDataGrid } from 'devextreme/excel_exporter';
+import { toast } from "sonner";
 
 interface CapacitacionesFormProps {
   onSubmit: null;
@@ -76,18 +77,18 @@ const CapacitacionesForm: React.FC<CapacitacionesFormProps> = ({
   const crearRegistro = (e: CapacitacionDto) => {
     axios.post("http://localhost:4000/capacitaciones", e).then((x) => {
       fetchData();
-      alert("Se ha guardado la capacitación correctamente.");
+      toast.success("Se ha guardado la capacitación correctamente.");
     });
   };
 
   const onDelete = (e: any) => {
-    axios.delete(`http://localhost:4000/capacitaciones/${e.data.id}`);
+    axios.delete(`http://localhost:4000/capacitaciones/${e.data.id}`).then(()=> toast.success("Se ha eliminado la capacitación correctamente"));
   };
 
   const onUpdate = (e: any) => {
     axios
       .put(`http://localhost:4000/capacitaciones/${e.data.id}`, e.data)
-      .then((x) => alert("Se ha guardado la capacitación correctamente."));
+      .then((x) => toast.success("Se ha guardado la capacitación correctamente."));
   };
 
   function btnEditarTemplate(e: any): any {

@@ -3,6 +3,7 @@ import axios from "axios";
 import "./HistoriaLaboral.css";
 import FormContainer from "./FormContainer";
 import HistorialLaboralTable from "./HistoriaLaboralTable";
+import { toast } from "sonner";
 
 const HistorialLaboralForm = () => {
   const [formData, setFormData] = useState({
@@ -25,8 +26,6 @@ const HistorialLaboralForm = () => {
     salario:number;
   }
   const [dataPuesto, setDataPuesto] = useState<Puesto[]>([]);
-
-
   const fechaInicioRef = useRef<HTMLInputElement>(null);
   const idEmpleadoRef = useRef<HTMLSelectElement>(null);
   const idPuestoRef = useRef<HTMLSelectElement>(null);
@@ -62,12 +61,11 @@ const HistorialLaboralForm = () => {
       axios
         .post("http://localhost:4000/historialaboral", newHistorialLaboral)
         .then((response) => {
-          alert("Historial laboral creado correctamente");
+          toast.success("Historial laboral creado correctamente");
           fetchData();
         })
         .catch((error) => {
-          console.error("Error al crear historial laboral:", error);
-          alert("Ha ocurrido un error al crear el historial laboral.");
+          toast.error("Error al crear historial laboral:");
         });
     }
   };
@@ -75,7 +73,7 @@ const HistorialLaboralForm = () => {
   const onDelete = (e: any) => {
     axios
       .delete(`http://localhost:4000/historialaboral/${e.data.id_de_aerolinea}`)
-      .then((x) => alert("Se ha eliminado el historial laboral correctamente"));
+      .then((x) => toast.success("Se ha eliminado el historial laboral correctamente"));
   };
 
   const onUpdate = (e: any) => {
@@ -84,7 +82,7 @@ const HistorialLaboralForm = () => {
         `http://localhost:4000/historialaboral/${e.data.id_de_aerolinea}`,
         e.data
       )
-      .then((x) => alert("Se ha guardado el historial laboral correctamente."));
+      .then((x) => toast.success("Se ha guardado el historial laboral correctamente."));
   };
 
   const fetchDataEmpleado = () => {
@@ -96,8 +94,7 @@ const HistorialLaboralForm = () => {
         setDataEmpleado(response.data as Empleado[]);
       })
       .catch((error) => {
-        console.error("Error fetching empleados data:", error);
-        alert("Ha ocurrido un error al obtener los empleados.");
+        toast.error("Ha ocurrido un error al obtener los empleados.");
       });
   };
 
@@ -120,9 +117,7 @@ const HistorialLaboralForm = () => {
       <div className="form-group">
         <label htmlFor="fechaInicio">Fecha de Inicio:</label>
         <input type="date" id="fechaInicio" ref={fechaInicioRef} required />
-      </div>
-    
-      
+      </div>   
       <div className="form-group">
         <label htmlFor="idEmpleado">ID de Empleado:</label>
         <select name="idEmpleado" id="idEmpleado" ref={idEmpleadoRef} required>

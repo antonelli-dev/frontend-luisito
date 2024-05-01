@@ -4,6 +4,7 @@ import "./PuestoForm.css";
 import PuestosTable from "./PuestosTable";
 import { CrearPuestoDTO } from "./views/aerolineas/dtos/crear-puesto-dto";
 import axios from "axios";
+import { toast } from "sonner";
 
 interface PuestosFormData {
   nombre: string;
@@ -51,11 +52,10 @@ const PuestosForm: React.FC<PuestosFormProps> = ({ onSubmit }) => {
     })
       .then((response) => {
         fetchData();
-        alert("Se ha creado el puesto correctamente.");
+       toast.success("Se ha creado el Puesto Correctamente");
       })
       .catch((error) => {
-        console.log(error);
-        alert("Ha ocurrido un error al crear el puesto.");
+        toast.error("Ha ocurrido un error al crear el puesto.");
       });
   };
   

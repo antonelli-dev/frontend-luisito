@@ -4,6 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import { authStore } from "../store/auth.store";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
+import { Toaster } from "sonner";
 
 export interface LayoutProps {
     children: ReactNode
@@ -43,6 +44,8 @@ export function Layout({ children }: LayoutProps) {
     return (
         <>
             {children}
+            <Toaster richColors position="top-center" />
+            
         </>
     );
 }

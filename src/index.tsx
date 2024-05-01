@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'devextreme/dist/css/dx.light.css';
 
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

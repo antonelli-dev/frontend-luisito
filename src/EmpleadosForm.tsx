@@ -11,6 +11,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { CrearAerolineaDto } from "./views/aerolineas/dtos/crear-aerolinea-dto";
 import { CrearEmpleadoDto } from "./views/aerolineas/dtos/crear-empleado-dto";
 import { CapacitacionDto } from "./views/capacitaciones/dtos/capacitacion.dto";
+import { toast } from "sonner";
 
 interface EmpleadosFormData {
   id: number;
@@ -79,12 +80,12 @@ const EmpleadosForm: React.FC<EmpleadosFormProps> = ({}) => {
       responseType: "json",
     })
       .then((response) => {
-        alert("Se ha creado el empleado correctamente.");
+        toast.success("Exito en la operacion");
         fetchData();
       })
       .catch((error) => {
         console.log(error);
-        alert("Ha ocurrido un error al crear el empleado.");
+        toast.error("Error al Guardar Empleado");
       });
   };
 
@@ -172,13 +173,13 @@ const EmpleadosForm: React.FC<EmpleadosFormProps> = ({}) => {
   const onDelete = (e: any) => {
     axios
       .delete(`http://localhost:4000/empleados/${e.data.id}`)
-      .then((x) => alert("Se ha eliminado el empleado correctamente"));
+      .then((x) =>  toast.success("Exito en la operacion"));
   };
 
   const onEdit = (e: any) => {
     axios
       .put(`http://localhost:4000/empleados/${e.data.id}`, e.data)
-      .then((x) => alert("Se ha guardado el empleado correctamente."));
+      .then((x) =>  toast.success("Exito en la operacion"));
   };
 
   return (
@@ -240,10 +241,10 @@ const EmpleadosForm: React.FC<EmpleadosFormProps> = ({}) => {
       </div>
       <div className="form-group">
       <FormControl sx={{ m: 1,width:"100%", marginRight: '2%' }}>
-        <InputLabel id="demo-multiple-name-label">Name</InputLabel>
+        <InputLabel id="demo-multiple-name-label">Capacitaciones Realizadas</InputLabel>
         <Select
-          labelId="demo-multiple-name-label"
-          id="demo-multiple-name"
+          labelId="capacitaciones"
+          id="capacitaciones"
           multiple
           value={Array.from(capacitacionesData)}
           onChange={(event)=>{ 

@@ -4,6 +4,7 @@ import "./AusenciasForm.css";
 import AusenciasTable from "./AusenciasTable";
 import axios from "axios";
 import { CrearAusenciaDTO } from "./views/aerolineas/dtos/crear-ausencia-dto";
+import { toast, Toaster } from "sonner";
 
 interface AusenciasFormData {
   id_empleado: number;
@@ -42,7 +43,6 @@ const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
       })
       .catch((error) => {
         console.error("Error fetching ausencias data:", error);
-        alert("Ha ocurrido un error al obtener las ausencias.");
       });
   };
   const fetchDataEmpleado = () => {
@@ -64,7 +64,8 @@ const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
     fetchDataEmpleado();
   }, []);
 
-  const handleSubmit = () => {
+  const handleSubmit = (e:any) => {
+    e.preventDefault();
     axios({
       method: "post",
       url: "http://localhost:4000/ausencias",
@@ -79,23 +80,23 @@ const AusenciasForm: React.FC<AusenciasFormProps> = ({ onSubmit }) => {
     })
       .then((response) => {
         fetchData();
-        alert("Se ha creado la ausencia correctamente.");
+        toast.success("Exito en la operacion");
       })
       .catch((error) => {
-        alert("Ha ocurrido un error al crear la aerolínea.");
+        toast.error("Error al crear al ausencia")
       });
   };
 
   const onDelete = (e: any) => {
     axios
       .delete(`http://localhost:4000/ausencias/${e.data.id}`)
-      .then((x) => alert("Se ha eliminado la ausencia correctamente"));
+      .then((x) => toast.success("Exito en la operacion"));
   };
 
   const onUpdate = (e: any) => {
     axios
       .put(`http://localhost:4000/ausencias/${e.data.id}`, e.data)
-      .then((x) => alert("Se ha guardado la ausencia correctamente."));
+      .then((x) =>  toast.success("Exito en la operacion"));
   };
   return (
     <FormContainer onSubmit={handleSubmit} title="Añadir Ausencia">

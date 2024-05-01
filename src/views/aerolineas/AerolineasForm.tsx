@@ -5,6 +5,7 @@ import axios from "axios";
 import { CrearAerolineaDto } from "./dtos/crear-aerolinea-dto";
 import AerolineasTable from "../../AerolineasTable";
 import { AerolineaDto } from "./dtos/aerolinea.dto";
+import { toast } from "sonner";
 
 interface AerolineasFormData {
   aerolineas: string;
@@ -25,11 +26,11 @@ const AerolineasForm: React.FC<AerolineasFormProps> = ({ onSubmit }) => {
 
     
   const onDelete = (e: any) => {
-    axios.delete(`http://localhost:4000/aerolineas/${e.data.id_de_aerolinea}`).then(x => alert("Se ha eliminado la aerolinea correctamente"));
+    axios.delete(`http://localhost:4000/aerolineas/${e.data.id_de_aerolinea}`).then(()=>toast.success("Se ha eliminado la aerolinea correctamente"));
   }
 
   const onUpdate = (e: any) => {
-    axios.put(`http://localhost:4000/aerolineas/${e.data.id_de_aerolinea}`, e.data).then(x => alert("Se ha guardado la capacitación correctamente."));
+    axios.put(`http://localhost:4000/aerolineas/${e.data.id_de_aerolinea}`, e.data).then(x => toast.success("Se ha guardado la capacitación correctamente."));
   };
 
 
@@ -49,11 +50,11 @@ const AerolineasForm: React.FC<AerolineasFormProps> = ({ onSubmit }) => {
         responseType: 'json'
       }).then(response => {
         fetchData();
-        alert("Se ha creado la aerolínea correctamente.")
+        toast.success("Se ha creado la aerolínea correctamente.")
         
       })
       .catch(error => {
-        alert("Ha ocurrido un error al crear la aerolínea.");
+        toast.error("Ha ocurrido un error al crear la aerolínea.");
       });
     }
   };
