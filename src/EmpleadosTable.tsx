@@ -61,8 +61,8 @@ const EmpleadosTable: React.FC<EmpleadosTableProps> = ({ data, onEdit, onDelete 
       <Column dataField="direccion" caption="Dirección" />
       <Column dataField="telefono" caption="Teléfono" />
       <Column dataField="correo_electronico" caption="Correo Electrónico" />
-      <Column dataField="aerolinea_id" caption="ID de Aerolínea" />
-      <Column dataField="puesto_id" caption="ID de Puesto" />
+      <Column dataField="aerolinea.nombre" caption="ID de Aerolínea" />
+      <Column dataField="puesto.nombre" caption="ID de Puesto" />
       <Column dataField="fecha_contratacion" caption="Fecha de Contratación" dataType="date" />
       <Column dataField="salario" caption="Salario" dataType="number" />
       <Export enabled={true} />
