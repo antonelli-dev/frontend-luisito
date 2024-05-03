@@ -41,9 +41,13 @@ const HistorialLaboralForm = () => {
     id_puesto: "",
   });
   const [didDelete, setDidDelete] = useState(false);
-  const [historialLaboraltodos, setHistorialLaboraltodos] = useState<HistorialLaboral[]>([]);
+  const [historialLaboraltodos, setHistorialLaboraltodos] = useState<
+    HistorialLaboral[]
+  >([]);
   const [dataEmpleado, setDataEmpleado] = useState<Empleado[]>([]);
-  const [empleadoSinHistorial, setEmpleadoSinHistorial] = useState<number[]>([]);
+  const [empleadoSinHistorial, setEmpleadoSinHistorial] = useState<number[]>(
+    []
+  );
   const [dataPuesto, setDataPuesto] = useState<Puesto[]>([]);
   const fechaInicioRef = useRef<HTMLInputElement>(null);
   const idEmpleadoRef = useRef<HTMLSelectElement>(null);
@@ -63,8 +67,8 @@ const HistorialLaboralForm = () => {
 
   useEffect(() => {
     compareValuesOfArays();
-  }, [dataEmpleado, historialLaboraltodos,didDelete]);
-  
+  }, [dataEmpleado, historialLaboraltodos, didDelete]);
+
   const compareValuesOfArays = () => {
     const arrayFinalEmpleado = dataEmpleado.map((data) => data.id);
     const arrayFinalEmpleadoConHistoria = historialLaboraltodos.map(
@@ -94,18 +98,35 @@ const HistorialLaboralForm = () => {
     ) {
       const newHistorialLaboral = {
         fecha_inicio: fechaInicioRef.current.value,
-        id_empleado: idEmpleadoRef.current.value,
-        id_de_puesto: idPuestoRef.current.value,
+        id_empleado: parseInt(idEmpleadoRef.current.value),
+        id_de_puesto: parseInt(idPuestoRef.current.value),
       };
-      axios
-        .post("http://localhost:4000/historialaboral", newHistorialLaboral)
-        .then((response) => {
-          toast.success("Historial laboral creado correctamente");
-          fetchData();
-        })
-        .catch((error) => {
-          toast.error("Error al crear historial laboral:");
-        });
+      fetchData();
+      for (let i = 0; i < historialLaboraltodos.length; i++) {
+        const historialaboral = historialLaboraltodos[i];
+        if (
+          historialaboral.id_de_puesto ===
+            Number(newHistorialLaboral.id_de_puesto) &&
+          historialaboral.id_empleado ===
+            Number(newHistorialLaboral.id_empleado)
+        ) {
+          toast.error(
+            "Ya existe una historia laboral de este usuario con este puesto"
+          );
+          break;
+        } else {
+          console.log("si paso");
+          axios
+            .post("http://localhost:4000/historialaboral", newHistorialLaboral)
+            .then((response) => {
+              toast.success("Historial laboral creado correctamente");
+              fetchData();
+            })
+            .catch((error) => {
+              toast.error("Error al crear historial laboral:");
+            });
+        }
+      }
     }
   };
 
@@ -115,8 +136,7 @@ const HistorialLaboralForm = () => {
       .then((x) =>
         toast.success("Se ha eliminado el historial laboral correctamente")
       );
-      setDidDelete(!didDelete);
-
+    setDidDelete(!didDelete);
   };
 
   const onUpdate = (e: any) => {
@@ -137,11 +157,8 @@ const HistorialLaboralForm = () => {
     return empleadoFinal;
   });
   useLayoutEffect(() => {
-    console.log("Layout Effect...");
-    console.log("Comparing arrays:", compareValuesOfArays());
-    console.log("Mapped data:", mapearEmpleados);
+    compareValuesOfArays();
   }, []);
-  
 
   const fetchDataEmpleado = () => {
     axios({
@@ -178,9 +195,13 @@ const HistorialLaboralForm = () => {
       <div className="form-group">
         <label htmlFor="idEmpleado">ID de Empleado:</label>
         <select name="idEmpleado" id="idEmpleado" ref={idEmpleadoRef} required>
-         {
-          dataEmpleado.map((data)=> <option value={data.id}> {data.nombres}{data.apellidos}</option>)
-         }
+          {dataEmpleado.map((data) => (
+            <option value={data.id}>
+              {" "}
+              {data.nombres}
+              {data.apellidos}
+            </option>
+          ))}
         </select>
       </div>
       <div className="form-group">
