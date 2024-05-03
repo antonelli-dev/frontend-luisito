@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import axios from "axios";
 import "./HistoriaLaboral.css";
 import FormContainer from "./FormContainer";
@@ -6,22 +6,21 @@ import HistorialLaboralTable from "./HistoriaLaboralTable";
 import { toast } from "sonner";
 
 const HistorialLaboralForm = () => {
-  const [formData, setFormData] = useState({
-    fecha_inicio: "",
-    id_empleado: "",
-    id_puesto: "",
-  });
-
-  const [historialLaboraltodos, setHistorialLaboraltodos] = useState<
-    historialaboral[]
-  >([]);
   interface Empleado {
     id: number;
     nombres: string;
     apellidos: string;
+    fecha_nacimiento: string;
+    genero: string;
+    direccion: string;
+    telefono: string;
+    correo_electronico: string;
+    aerolinea_id: number;
+    puesto_id: number;
+    fecha_contratacion: string;
+    salario: number;
   }
-  const [dataEmpleado, setDataEmpleado] = useState<Empleado[]>([]);
-  const [empleadoSinHistorial, setEmpleadoSinHistorial] = useState<[]>([]);
+
   interface Puesto {
     id: number;
     nombre: string;
@@ -29,12 +28,22 @@ const HistorialLaboralForm = () => {
     salario: number;
   }
 
-  interface historialaboral {
+  interface HistorialLaboral {
     id_de_historial: number;
     fecha_inicio: string;
     id_empleado: number;
     id_de_puesto: number;
   }
+
+  const [formData, setFormData] = useState({
+    fecha_inicio: "",
+    id_empleado: "",
+    id_puesto: "",
+  });
+  const [didDelete, setDidDelete] = useState(false);
+  const [historialLaboraltodos, setHistorialLaboraltodos] = useState<HistorialLaboral[]>([]);
+  const [dataEmpleado, setDataEmpleado] = useState<Empleado[]>([]);
+  const [empleadoSinHistorial, setEmpleadoSinHistorial] = useState<number[]>([]);
   const [dataPuesto, setDataPuesto] = useState<Puesto[]>([]);
   const fechaInicioRef = useRef<HTMLInputElement>(null);
   const idEmpleadoRef = useRef<HTMLSelectElement>(null);
@@ -44,10 +53,19 @@ const HistorialLaboralForm = () => {
     fetchData();
     fetchDataEmpleado();
     fetchDataPuesto();
+    compareValuesOfArays();
   }, []);
 
+  useEffect(() => {
+    fetchDataEmpleado();
+    compareValuesOfArays();
+  }, []);
+
+  useEffect(() => {
+    compareValuesOfArays();
+  }, [dataEmpleado, historialLaboraltodos,didDelete]);
+  
   const compareValuesOfArays = () => {
-    console.log(dataEmpleado);
     const arrayFinalEmpleado = dataEmpleado.map((data) => data.id);
     const arrayFinalEmpleadoConHistoria = historialLaboraltodos.map(
       (data) => data.id_empleado
@@ -55,8 +73,9 @@ const HistorialLaboralForm = () => {
     const empleadoSinHistoria = arrayFinalEmpleado.filter(
       (valor) => !arrayFinalEmpleadoConHistoria.includes(valor)
     );
-    setEmpleadoSinHistorial(empleadoSinHistoria as []);
+    setEmpleadoSinHistorial(empleadoSinHistoria);
   };
+
   const fetchDataPuesto = () => {
     axios({
       method: "GET",
@@ -96,6 +115,8 @@ const HistorialLaboralForm = () => {
       .then((x) =>
         toast.success("Se ha eliminado el historial laboral correctamente")
       );
+      setDidDelete(!didDelete);
+
   };
 
   const onUpdate = (e: any) => {
@@ -108,19 +129,27 @@ const HistorialLaboralForm = () => {
         toast.success("Se ha guardado el historial laboral correctamente.")
       );
   };
+  const mapearEmpleados = empleadoSinHistorial.map((empleadoId) => {
+    const empleadoFinal = dataEmpleado.find(
+      (empleado) => empleado.id === empleadoId
+    );
+    console.log("Empleado final:", empleadoFinal);
+    return empleadoFinal;
+  });
+  useLayoutEffect(() => {
+    console.log("Layout Effect...");
+    console.log("Comparing arrays:", compareValuesOfArays());
+    console.log("Mapped data:", mapearEmpleados);
+  }, []);
+  
 
   const fetchDataEmpleado = () => {
     axios({
       method: "get",
       url: "http://localhost:4000/empleados",
     })
-      .then((response) => {
-        console.log(response.data);
-        setDataEmpleado(response.data as Empleado[]);
-        console.log("Test en el fetch", dataEmpleado);
-      })
-      .then(() => {
-        compareValuesOfArays();
+      .then(async (response) => {
+        await setDataEmpleado(response.data);
       })
       .catch((error) => {
         toast.error("Ha ocurrido un error al obtener los empleados.");
@@ -133,7 +162,7 @@ const HistorialLaboralForm = () => {
       url: "http://localhost:4000/historialaboral",
     })
       .then((response) => {
-        setHistorialLaboraltodos(response.data as historialaboral[]);
+        setHistorialLaboraltodos(response.data as HistorialLaboral[]);
       })
       .catch((error) => {
         alert("Ha ocurrido un error al obtener los historiales laborales.");
@@ -150,13 +179,13 @@ const HistorialLaboralForm = () => {
         <label htmlFor="idEmpleado">ID de Empleado:</label>
         <select name="idEmpleado" id="idEmpleado" ref={idEmpleadoRef} required>
           {empleadoSinHistorial.map((empleadoId) => {
-            const empleado = dataEmpleado.find(
+            const empleadoFinal = dataEmpleado.find(
               (empleado) => empleado.id === empleadoId
             );
-            if (empleado) {
+            if (empleadoFinal?.id) {
               return (
-                <option key={empleado.id} value={empleado.id as number}>
-                  {empleado.nombres} {empleado.apellidos}
+                <option key={empleadoFinal.id} value={empleadoFinal.id as number}>
+                  {empleadoFinal.nombres} {empleadoFinal.apellidos}
                 </option>
               );
             } else {
