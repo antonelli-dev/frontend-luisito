@@ -1,5 +1,6 @@
 import {AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse} from "axios";
 import { authStore } from "../../../store/auth.store";
+import { toast } from "sonner";
 
 interface HttpBadResponse {
     message: string;
@@ -11,7 +12,7 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
 }
 
 const onResponseError = (error: AxiosError): Promise<AxiosError> => {
-
+    toast.error((error?.response?.data as HttpBadResponse).message);
     // const setOnError = authStore( (state) => state.setOnError );
     //  setOnError(true, "prueba")
     

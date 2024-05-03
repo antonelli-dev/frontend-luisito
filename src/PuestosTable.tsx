@@ -7,8 +7,8 @@ import { exportDataGrid } from 'devextreme/excel_exporter';
 
 interface PuestoTableProps {
   data: any[]; 
-  onDelete: () =>void;
-  onEdit: () =>void;
+  onDelete: (e:any) =>void;
+  onEdit: (e:any) =>void;
 }
 
 const EmpleadosTable: React.FC<PuestoTableProps> = ({ data,onDelete,onEdit }) => {

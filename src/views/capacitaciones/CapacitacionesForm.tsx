@@ -32,6 +32,17 @@ const CapacitacionesForm: React.FC<CapacitacionesFormProps> = ({
   const fechaInicioRef = useRef<HTMLInputElement>(null);
   const fechaFinalRef = useRef<HTMLInputElement>(null);
   const [showTable, setShowTable] = useState(false);
+  
+  const clearInputs = () => {
+    if (nombreRef.current) nombreRef.current.value = "";
+    if (descripcionRef.current) descripcionRef.current.value = "";
+    if (fechaInicioRef.current) fechaInicioRef.current.value = "";
+    if (fechaFinalRef.current) fechaFinalRef.current.value = "";
+  
+    // Trigger a re-render by updating the state
+    setCapacitaciones([...capacitaciones as CapacitacionDto[]]); // You can replace this line with a state variable update if you have one
+  };
+  
 
   function onExporting(e: any) {
     const workbook = new Workbook();
@@ -78,6 +89,7 @@ const CapacitacionesForm: React.FC<CapacitacionesFormProps> = ({
     axios.post("http://localhost:4000/capacitaciones", e).then((x) => {
       fetchData();
       toast.success("Se ha guardado la capacitación correctamente.");
+      clearInputs();
     });
   };
 

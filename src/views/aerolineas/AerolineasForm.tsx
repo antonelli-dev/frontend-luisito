@@ -17,20 +17,27 @@ interface AerolineasFormProps {
   onSubmit: null;
 }
 
+
+
 const AerolineasForm: React.FC<AerolineasFormProps> = ({ onSubmit }) => {
   const [aerolineasData, setAerolineas] = useState<AerolineaDto[]>([]);
   const nombreRef = useRef<HTMLInputElement>(null);
   const descripcionRef = useRef<HTMLInputElement>(null);
   const [showDialog, setShowDialog] = useState(false);
  
-
+  const clearInputs = () => {
+    if (nombreRef.current) nombreRef.current.value = "";
+    if (descripcionRef.current) descripcionRef.current.value = "";
+  };
     
   const onDelete = (e: any) => {
-    axios.delete(`http://localhost:4000/aerolineas/${e.data.id_de_aerolinea}`).then(()=>toast.success("Se ha eliminado la aerolinea correctamente"));
+    axios.delete(`http://localhost:4000/aerolineas/${e.data.id_de_aerolinea}`)
+    .then(()=>toast.success("Se ha eliminado la aerolinea correctamente")).catch(() => null);
   }
 
   const onUpdate = (e: any) => {
-    axios.put(`http://localhost:4000/aerolineas/${e.data.id_de_aerolinea}`, e.data).then(x => toast.success("Se ha guardado la capacitación correctamente."));
+    axios.put(`http://localhost:4000/aerolineas/${e.data.id_de_aerolinea}`, e.data)
+    .then(x => toast.success("Se ha guardado la capacitación correctamente.")).finally(() =>clearInputs());
   };
 
 
@@ -52,7 +59,9 @@ const AerolineasForm: React.FC<AerolineasFormProps> = ({ onSubmit }) => {
         fetchData();
         toast.success("Se ha creado la aerolínea correctamente.")
         
-      })
+      }).finally(
+        () =>clearInputs()
+    )
       .catch(error => {
         toast.error("Ha ocurrido un error al crear la aerolínea.");
       });

@@ -58,10 +58,19 @@ const PuestosForm: React.FC<PuestosFormProps> = ({ onSubmit }) => {
         toast.error("Ha ocurrido un error al crear el puesto.");
       });
   };
+  const onDelete = (e: any) => {
+    console.log("el id", e.data.id)
+    axios
+      .delete(`http://localhost:4000/puestos/${Number(e.data.id)}`)
+      .then((x) => toast.success("Exito en la operacion"));
+  };
+
+  const onUpdate = (e: any) => {
+    axios
+      .put(`http://localhost:4000/puestos/${e.data.id}`, e.data)
+      .then((x) =>  toast.success("Exito en la operacion"));
+  };
   
-
-
-
   return (
       <FormContainer onSubmit={handleSubmit} title="Añadir Puesto">
         <div className="form-group">
@@ -77,7 +86,7 @@ const PuestosForm: React.FC<PuestosFormProps> = ({ onSubmit }) => {
           <input type="number" id="salario" ref={salarioRef} />
         </div>
         <button type="submit" className="submit-button">Enviar</button>
-        <PuestosTable data={puestoData} onDelete={()=>{}} onEdit={()=>{}}/>
+        <PuestosTable data={puestoData} onDelete={onDelete} onEdit={onUpdate}/>
       </FormContainer>
   );
 };

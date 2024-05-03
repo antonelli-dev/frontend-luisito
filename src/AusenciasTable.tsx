@@ -46,7 +46,7 @@ const AusenciasTable: React.FC<AusenciasTableProps> = ({ data, onEdit, onDelete 
       onExporting={onExporting}
     >
       <Column dataField="id" caption="ID" allowEditing={false} />
-      <Column dataField="id_empleado" caption="ID Empleado" allowEditing={false} />
+      <Column dataField="empleado.nombres" caption="ID Empleado" allowEditing={false} />
       <Column dataField="descripcion" caption="Descripción">
         <RequiredRule />
       </Column>
