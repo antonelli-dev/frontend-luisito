@@ -119,7 +119,7 @@ const HistorialLaboralForm = () => {
           axios
             .post("http://localhost:4000/historialaboral", newHistorialLaboral)
             .then((response) => {
-              toast.success("Historial laboral creado correctamente");
+              toast.success("Historial laboral creado correctamente"); 
               fetchData();
             })
             .catch((error) => {
