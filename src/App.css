@@ -32,7 +32,7 @@
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-left: 20%;
+  margin-left: 10%;
   height: 100%;
 }
 
@@ -57,7 +57,7 @@ body{
   flex-direction: column;
   margin-top: 5%;
   height: 80%;
-  width: 70%;
+  width: 77%;
   align-items: center;
   text-align: center;
   justify-content: center;

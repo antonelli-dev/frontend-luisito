@@ -37,7 +37,7 @@ interface EmpleadosFormProps {}
 
 const EmpleadosForm: React.FC<EmpleadosFormProps> = ({}) => {
   const [capacitacionesData, setCapacitacionesData] = useState<string[]>([]);
-  const [capacitacionesFillData, setFillDataCapacitaciones] = useState<FillDataCapacitaciones[]>([]);
+  const [capacitacionesFillData, setFillDataCapacitaciones] = useState<CapacitacionDto[]>([]);
   const [dataEmpleado, setDataEmpleado] = useState<[]>([]);
   const nombresRef = useRef<HTMLInputElement>(null);
   const apellidosRef = useRef<HTMLInputElement>(null);
@@ -177,8 +177,9 @@ const EmpleadosForm: React.FC<EmpleadosFormProps> = ({}) => {
   };
 
   const onEdit = (e: any) => {
-    axios
-      .put(`http://localhost:4000/empleados/${e.data.id}`, e.data)
+    console.log("e del edit",e.data)
+     axios
+     .put(`http://localhost:4000/empleados/${e.data.id}`, e.data)
       .then((x) =>  toast.success("Exito en la operacion"));
   };
 
@@ -276,7 +277,7 @@ const EmpleadosForm: React.FC<EmpleadosFormProps> = ({}) => {
       <button type="submit" className="submit-button">
         Enviar
       </button>
-      <EmpleadosTable data={dataEmpleado} onEdit={onEdit} onDelete={onDelete} />
+      <EmpleadosTable data={dataEmpleado} onEdit={onEdit} onDelete={onDelete} capacitaciones={capacitacionesFillData} />
     </FormContainer>
   );
 };

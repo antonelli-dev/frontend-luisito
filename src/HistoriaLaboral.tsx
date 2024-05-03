@@ -178,20 +178,9 @@ const HistorialLaboralForm = () => {
       <div className="form-group">
         <label htmlFor="idEmpleado">ID de Empleado:</label>
         <select name="idEmpleado" id="idEmpleado" ref={idEmpleadoRef} required>
-          {empleadoSinHistorial.map((empleadoId) => {
-            const empleadoFinal = dataEmpleado.find(
-              (empleado) => empleado.id === empleadoId
-            );
-            if (empleadoFinal?.id) {
-              return (
-                <option key={empleadoFinal.id} value={empleadoFinal.id as number}>
-                  {empleadoFinal.nombres} {empleadoFinal.apellidos}
-                </option>
-              );
-            } else {
-              return <option>No Hay Empleados sin Historial</option>;
-            }
-          })}
+         {
+          dataEmpleado.map((data)=> <option value={data.id}> {data.nombres}{data.apellidos}</option>)
+         }
         </select>
       </div>
       <div className="form-group">
